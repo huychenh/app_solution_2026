@@ -1,0 +1,60 @@
+<h2>Category List</h2>
+
+<div class="toolbar">
+  <button (click)="openCreateModal()">Add Category</button>
+</div>
+
+<!-- Loading -->
+<p *ngIf="isLoading">Loading...</p>
+
+<!-- Error -->
+<p class="error" *ngIf="errorMessage">
+  {{ errorMessage }}
+</p>
+
+<!-- Empty -->
+<p *ngIf="!isLoading && categories.length === 0">
+  No categories found
+</p>
+
+<!-- Table -->
+<table *ngIf="categories.length > 0">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Created Date</th>
+      <th>Updated Date</th>
+      <th style="width: 200px">Actions</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let c of categories">
+      <td>{{ c.id }}</td>
+      <td>{{ c.name }}</td>
+      <td>{{ c.description || '-' }}</td>
+      <td>{{ c.createdDate | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td>{{ c.updatedDate | date:'yyyy-MM-dd HH:mm' }}</td>
+      <td>
+        <button (click)="openDetailModal(c.id!)">Detail</button>
+        <button (click)="openEditModal(c.id!)">Edit</button>
+        <button (click)="openDeleteModal(c.id!)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- MODAL FORM -->
+<app-category-form
+  *ngIf="showFormModal"
+  [visible]="showFormModal"
+  [category]="selectedCategory"
+  [mode]="modalMode"
+  (close)="closeModal()"
+  (edit)="switchToEdit()"
+  (update)="updateCategory($event)"
+  (create)="createCategory($event)"
+  (deleteConfirm)="deleteCategory($event)">
+</app-category-form>

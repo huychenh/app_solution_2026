@@ -1,0 +1,101 @@
+/* Title */
+h2 {
+  margin-bottom: 16px;
+  font-size: 22px;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 12px;
+}
+
+.toolbar button {
+  background: #2563eb;
+  color: #ffffff;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.toolbar button:hover {
+  background: #1d4ed8;
+}
+
+/* States */
+p {
+  margin: 12px 0;
+  color: #374151;
+}
+
+.error {
+  color: #dc2626;
+  font-weight: 500;
+}
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: #ffffff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+thead {
+  background: #f3f4f6;
+}
+
+th,
+td {
+  padding: 12px 14px;
+  text-align: left;
+  font-size: 14px;
+  color: #374151;
+}
+
+th {
+  font-weight: 600;
+  color: #111827;
+}
+
+tbody tr {
+  border-bottom: 1px solid #e5e7eb;
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+/* Action buttons */
+td button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 13px;
+  cursor: pointer;
+  margin-right: 6px;
+  transition: background 0.2s ease;
+}
+
+td button:last-child {
+  background: #dc2626; /* Delete */
+  color: #ffffff;
+}
+
+td button:last-child:hover {
+  background: #b91c1c;
+}

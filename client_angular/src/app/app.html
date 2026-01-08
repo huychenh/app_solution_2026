@@ -1,0 +1,38 @@
+<main class="main">
+  <nav class="menu">
+    <strong>ShopOnline</strong>
+    <a
+      routerLink="/"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      Home
+    </a>
+
+    <a routerLink="/categories" routerLinkActive="active">
+      Category
+    </a>
+
+   <!-- LOGIN/LOGOUT DISPLAY -->
+  <div *ngIf="user$ | async as user; else guest" class="user-panel">
+    <span class="user">
+      Hi {{ user.profile['name'] || 'User' }}
+      (role: {{ user.profile['role'] || 'Member' }} )
+    </span> | 
+    <a href="#" (click)="logout()">Logout</a>
+  </div>
+
+  <ng-template #guest>
+    <div class="user-panel">
+      <span class="guest">Hi Guest</span> | 
+      <a href="#" (click)="login()">Login</a>
+    </div>
+  </ng-template>
+
+
+  </nav>
+
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</main>

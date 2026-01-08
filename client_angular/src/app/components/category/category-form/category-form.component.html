@@ -1,0 +1,109 @@
+<form #categoryForm="ngForm" class="modal-backdrop">
+
+  <div class="modal">
+
+    <!-- TITLES -->
+    <h3 *ngIf="isDetail">Category Detail</h3>
+    <h3 *ngIf="isEdit">Edit Category</h3>
+    <h3 *ngIf="isCreate">Create Category</h3>
+    <h3 *ngIf="isDelete">Delete Category</h3>
+
+    <!-- ID (hide when create) -->
+    <div class="form-group" *ngIf="!isCreate">
+      <label>ID</label>
+      <input [value]="category.id" disabled />
+    </div>
+
+    <!-- NAME -->
+    <div class="form-group">
+      <label>Name</label>
+      <input
+        name="name"
+        [(ngModel)]="category.name"
+        #name="ngModel"
+        required
+        minlength="3"
+        [disabled]="isDetail || isDelete"
+      />
+      <div class="error" *ngIf="name.invalid && name.touched">
+        <small *ngIf="name.errors?.['required']">Name is required</small>
+        <small *ngIf="name.errors?.['minlength']">Name must be at least 3 characters</small>
+      </div>
+    </div>
+
+    <!-- DESCRIPTION -->
+    <div class="form-group">
+      <label>Description</label>
+      <textarea
+        name="description"
+        [(ngModel)]="category.description"
+        #description="ngModel"
+        maxlength="255"
+        [disabled]="isDetail || isDelete"
+      ></textarea>
+      <div class="error" *ngIf="description.invalid && description.touched">
+        <small *ngIf="description.errors?.['maxlength']">
+          Description cannot exceed 255 characters
+        </small>
+      </div>
+    </div>
+
+    <!-- DATES (hide when create) -->
+    <div class="form-group" *ngIf="!isCreate">
+      <label>Created Date</label>
+      <input
+        [value]="category.createdDate | date:'yyyy-MM-dd HH:mm'"
+        disabled
+      />
+    </div>
+
+    <div class="form-group" *ngIf="!isCreate">
+      <label>Updated Date</label>
+      <input
+        [value]="category.updatedDate | date:'yyyy-MM-dd HH:mm'"
+        disabled
+      />
+    </div>
+
+    <!-- ACTIONS -->
+    <div class="actions">
+
+      <!-- DETAIL -->
+      <ng-container *ngIf="isDetail">        
+        <button type="button" (click)="onEdit()">Edit</button>
+        <button type="button" (click)="onClose()">Close</button>
+      </ng-container>
+
+      <!-- EDIT -->
+      <ng-container *ngIf="isEdit">
+        <button
+          type="button"
+          (click)="onUpdate()"
+          [disabled]="categoryForm.invalid"
+        >
+          Save
+        </button>
+        <button type="button" (click)="onClose()">Close</button>
+      </ng-container>
+
+      <!-- CREATE -->
+      <ng-container *ngIf="isCreate">
+        <button
+          type="button"
+          (click)="onCreate()"
+          [disabled]="categoryForm.invalid"
+        >
+          Save
+        </button>
+        <button type="button" (click)="onClose()">Close</button>
+      </ng-container>
+
+      <!-- DELETE -->
+      <ng-container *ngIf="isDelete">
+        <button class="danger" type="button" (click)="onDelete()">Delete</button>
+        <button type="button" (click)="onClose()">Close</button>
+      </ng-container>
+
+    </div>
+  </div>
+</form>

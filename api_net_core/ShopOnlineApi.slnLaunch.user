@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "New Profile",
+    "Projects": [
+      {
+        "Path": "ShopOnline.IdentityServer\\ShopOnline.IdentityServer.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ShopOnlineApi\\ShopOnline.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "ShopOnline.MvcClient\\ShopOnline.MvcClient.csproj",
+        "Action": "Start"
+      }
+    ]
+  }
+]

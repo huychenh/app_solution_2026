@@ -1,0 +1,91 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(2px);
+}
+
+.modal-box {
+  background: #fff;
+  border-radius: 14px;
+  width: 620px;
+  padding: 0 0 20px 0;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 2px solid #f0f0f0;
+  background: #fafafa;
+  border-top-left-radius: 14px;
+  border-top-right-radius: 14px;
+}
+
+.modal-info-wrapper {
+  padding: 20px;
+}
+
+.modal-info-row {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px solid #efefef;
+  align-items: center;
+}
+
+.modal-label {
+  width: 140px;
+  text-align: right;
+  padding-right: 16px;
+  font-weight: 600;
+  color: #444;
+}
+
+.modal-value {
+  flex: 1;
+  text-align: left;
+  font-weight: 500;
+  color: #222;
+}
+
+.modal-loading {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+}
+
+.modal-button {
+  margin-top: 10px;
+  margin-left: 20px;
+  padding: 10px 20px;
+  background: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: 0.2s;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 14px;
+  outline: none;
+  transition: 0.2s;
+  box-sizing: border-box;
+}
+
+.modal-input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 4px rgba(0, 123, 255, 0.5);
+}
+
+.user-table tbody tr:hover {
+  background-color: #f0f8ff;  
+}
