@@ -14,6 +14,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
+builder.Services.Configure<BaseUrlSettings>(
+    builder.Configuration.GetSection("BaseURLSettings"));
+
+
 // Google external login
 builder.Services.AddAuthentication()
     .AddGoogle(options =>
@@ -23,10 +27,14 @@ builder.Services.AddAuthentication()
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
     });
 
+var baseUrls = builder.Configuration
+    .GetSection("BaseURLSettings")
+    .Get<BaseUrlSettings>();
+
 // IdentityServer
 builder.Services.AddIdentityServer()
-    .AddAspNetIdentity<AppUser>()
-    .AddInMemoryClients(Config.Clients)
+    .AddAspNetIdentity<AppUser>()    
+    .AddInMemoryClients(Config.Clients(baseUrls!))
     .AddInMemoryApiScopes(Config.ApiScopes)
     .AddInMemoryIdentityResources(Config.IdentityResources)
     .AddInMemoryApiResources(Config.ApiResources)

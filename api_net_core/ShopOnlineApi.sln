@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.IdentityServer",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.Common", "ShopOnline.Common\ShopOnline.Common.csproj", "{FD2F826D-7F8D-4D52-997D-3394CE190D69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopOnline.MvcClient", "ShopOnline.MvcClient\ShopOnline.MvcClient.csproj", "{A17C3802-F049-40AD-92A9-8DBF7C842E82}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,10 +27,6 @@ Global
 		{FD2F826D-7F8D-4D52-997D-3394CE190D69}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FD2F826D-7F8D-4D52-997D-3394CE190D69}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FD2F826D-7F8D-4D52-997D-3394CE190D69}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A17C3802-F049-40AD-92A9-8DBF7C842E82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A17C3802-F049-40AD-92A9-8DBF7C842E82}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A17C3802-F049-40AD-92A9-8DBF7C842E82}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A17C3802-F049-40AD-92A9-8DBF7C842E82}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
