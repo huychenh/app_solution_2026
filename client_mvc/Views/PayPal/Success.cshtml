@@ -1,0 +1,25 @@
+@{
+    ViewData["Title"] = "Payment Success";
+}
+
+<h2>Payment Approved</h2>
+
+<p>
+    Your PayPal payment has been approved successfully.
+</p>
+
+@if (!string.IsNullOrEmpty(ViewBag.PayPalToken))
+{
+    <p>
+        <strong>PayPal Order Token:</strong><br />
+        <code>@ViewBag.PayPalToken</code>
+    </p>
+}
+
+<p>
+    The payment will be finalized shortly.
+</p>
+
+<a asp-controller="Home" asp-action="Index" class="btn btn-success">
+    Back to Home
+</a>

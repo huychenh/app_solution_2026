@@ -1,0 +1,17 @@
+@{
+    ViewData["Title"] = "PayPal Checkout";
+}
+
+<h2>PayPal Checkout</h2>
+
+<p>
+    Click the button below to proceed with PayPal payment.
+</p>
+
+<form asp-action="CreatePayment" method="post">
+    @Html.AntiForgeryToken()
+
+    <button type="submit" class="btn btn-primary">
+        💳 Pay with PayPal
+    </button>
+</form>

@@ -8,6 +8,8 @@ using ShopOnline.Api.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddHttpClient();
+
 // Add controllers
 builder.Services.AddControllers();
 
@@ -63,8 +65,7 @@ builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddAuthentication("Bearer")
     .AddJwtBearer("Bearer", options =>
     {
-        options.Authority = builder.Configuration.GetSection("BaseURLSettings")["ShopOnline_IdentityServerProvider_Url"]; // URL IdentityServer
-        
+        options.Authority = builder.Configuration.GetSection("BaseURLSettings")["ShopOnline_IdentityServerProvider_Url"]; // URL IdentityServer        
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateAudience = true,
@@ -81,18 +82,29 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
+//var authBuilder = builder.Services.AddAuthorizationBuilder();
 
-var authBuilder = builder.Services.AddAuthorizationBuilder();
+//authBuilder.SetDefaultPolicy(new AuthorizationPolicyBuilder()
+//    .AddAuthenticationSchemes("Bearer")
+//    .RequireAuthenticatedUser()
+//    .Build());
 
-authBuilder.SetDefaultPolicy(new AuthorizationPolicyBuilder()
-    .AddAuthenticationSchemes("Bearer")
-    .RequireAuthenticatedUser()
-    .Build());
+//authBuilder.AddPolicy("RequireAdmin", policy =>
+//    policy.RequireRole("Admin"));
 
-authBuilder.AddPolicy("RequireAdmin", policy =>
-    policy.RequireRole("Admin"));
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ApiScope", policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireClaim("scope", "shop_online_api");
+    });
 
-
+    options.AddPolicy("RequireAdmin", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -108,7 +120,6 @@ builder.Services.AddCors(options =>
         .AllowCredentials();
     });
 });
-
 
 var app = builder.Build();
 

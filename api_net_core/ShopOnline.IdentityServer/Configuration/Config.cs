@@ -1,4 +1,5 @@
-﻿using Duende.IdentityServer.Models;
+﻿using Duende.IdentityServer;
+using Duende.IdentityServer.Models;
 
 namespace ShopOnline.IdentityServer.Configuration;
 
@@ -72,6 +73,22 @@ public static class Config
             AllowPlainTextPkce = false,
             AllowOfflineAccess = true,
             AlwaysIncludeUserClaimsInIdToken = true
+        },
+        new Client
+        {
+            ClientId = "shop_online_api_password_client",
+            AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
+            ClientSecrets =
+            {
+                new Secret("secret".Sha256())
+            },
+            AllowedScopes =
+            {
+                "shop_online_api",
+                IdentityServerConstants.StandardScopes.OpenId,
+                IdentityServerConstants.StandardScopes.Profile
+            }
         }
+
     ];
 }

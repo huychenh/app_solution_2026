@@ -1,3 +1,12 @@
 api_net_core/.vs/
 api_net_core/ShopOnline.IdentityServer/tempkey.jwk
 api_net_core/ShopOnline.IdentityServer/keys/is-signing-key-C909A9124F558B4F9D295BFD50E55ECE.json
+api_net_core/ShopOnline.IdentityServer/obj/
+api_net_core/ShopOnlineApi/bin/
+api_net_core/ShopOnlineApi/obj/
+client_mvc/bin/
+client_mvc/obj/
+api_net_core/ShopOnline.IdentityServer/bin/
+api_net_core/ShopOnline.Common/bin/
+api_net_core/ShopOnline.Common/obj/
+api_net_core/ShopOnline.IdentityServer/keys/is-signing-key-9B8940C4E17485965A9DF72992EB1FE1.json
