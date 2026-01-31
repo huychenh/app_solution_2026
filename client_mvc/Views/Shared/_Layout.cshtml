@@ -40,33 +40,45 @@
 
                             <li class="nav-item">
                                 <span class="nav-link text-dark">
-                                    Hello, <strong>@name (@role) </strong>
+                                    Hello, <strong>@name (@role)</strong>
                                 </span>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">Get Products</a>
+                                <a class="nav-link text-dark" asp-controller="Product" asp-action="Index">
+                                    Products
+                                </a>
                             </li>
 
-                            if (role.ToLower() == "admin")
+                            <a class="nav-link text-primary fw-bold" asp-controller="PayPal" asp-action="Index">
+                                💳 PayPal
+                            </a>
+
+                            @if (role.ToLower() == "admin")
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-dark" asp-controller="Product" asp-action="Create">Create
-                                        Products</a>
+                                    <a class="nav-link text-dark" asp-controller="Product" asp-action="Create">
+                                        Create Product
+                                    </a>
                                 </li>
                             }
 
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Logout">Logout</a>
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Logout">
+                                    Logout
+                                </a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Login">Login</a>
+                                <a class="nav-link text-dark" asp-controller="Home" asp-action="Login">
+                                    Login
+                                </a>
                             </li>
                         }
                     </ul>
+
                 </div>
             </div>
         </nav>
