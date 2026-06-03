@@ -52,18 +52,18 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9943),
+                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4111),
                             Description = "Electronics",
                             Name = "Electronics",
-                            UpdatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9943)
+                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4112)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9945),
+                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4114),
                             Description = "Accessories",
                             Name = "Accessories",
-                            UpdatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9946)
+                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4115)
                         });
                 });
 
@@ -186,20 +186,20 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9922),
+                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088),
                             Email = "emily.johnson@x.dummyjson.com",
                             FirstName = "Emily",
                             LastName = "Johnson",
-                            UpdatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9922)
+                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9925),
+                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091),
                             Email = "michael.williams@x.dummyjson.com",
                             FirstName = "Michael",
                             LastName = "Williams",
-                            UpdatedDate = new DateTime(2026, 1, 29, 4, 3, 15, 651, DateTimeKind.Utc).AddTicks(9925)
+                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091)
                         });
                 });
 #pragma warning restore 612, 618

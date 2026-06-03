@@ -12,7 +12,7 @@ using ShopOnline.IdentityServer.Models;
 namespace ShopOnline.IdentityServer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260106021722_Init")]
+    [Migration("20260601075349_Init")]
     partial class Init
     {
         /// <inheritdoc />

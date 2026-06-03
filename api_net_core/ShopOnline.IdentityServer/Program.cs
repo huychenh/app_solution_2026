@@ -27,6 +27,17 @@ builder.Services.AddAuthentication()
         options.ClientSecret = builder.Configuration["Authentication:Google:ClientSecret"]!;
     });
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowSwagger", policy =>
+    {
+        policy.WithOrigins("https://localhost:7210") // Thay bằng URL chạy thực tế của dự án API bạn
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
+});
+
 var baseUrls = builder.Configuration
     .GetSection("BaseURLSettings")
     .Get<BaseUrlSettings>();
@@ -58,8 +69,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
+app.UseCors("AllowSwagger");
 app.UseIdentityServer();
-app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapDefaultControllerRoute();

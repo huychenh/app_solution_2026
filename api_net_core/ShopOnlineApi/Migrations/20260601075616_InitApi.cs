@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ShopOnline.Api.Migrations
 {
     /// <inheritdoc />
-    public partial class Init : Migration
+    public partial class InitApi : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -27,6 +27,26 @@ namespace ShopOnline.Api.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Payments",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ProductId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PayPalOrderId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PayPalCaptureId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Currency = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Payments", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -67,8 +87,8 @@ namespace ShopOnline.Api.Migrations
                 columns: new[] { "Id", "CreatedDate", "Description", "Name", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5408), "Electronics", "Electronics", new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5409) },
-                    { 2, new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5411), "Accessories", "Accessories", new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5412) }
+                    { 1, new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4111), "Electronics", "Electronics", new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4112) },
+                    { 2, new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4114), "Accessories", "Accessories", new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4115) }
                 });
 
             migrationBuilder.InsertData(
@@ -85,8 +105,8 @@ namespace ShopOnline.Api.Migrations
                 columns: new[] { "Id", "CreatedDate", "Email", "FirstName", "LastName", "UpdatedDate" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5385), "emily.johnson@x.dummyjson.com", "Emily", "Johnson", new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5385) },
-                    { 2, new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5388), "michael.williams@x.dummyjson.com", "Michael", "Williams", new DateTime(2026, 1, 6, 2, 17, 44, 899, DateTimeKind.Utc).AddTicks(5389) }
+                    { 1, new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088), "emily.johnson@x.dummyjson.com", "Emily", "Johnson", new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088) },
+                    { 2, new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091), "michael.williams@x.dummyjson.com", "Michael", "Williams", new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091) }
                 });
         }
 
@@ -95,6 +115,9 @@ namespace ShopOnline.Api.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Categories");
+
+            migrationBuilder.DropTable(
+                name: "Payments");
 
             migrationBuilder.DropTable(
                 name: "Products");

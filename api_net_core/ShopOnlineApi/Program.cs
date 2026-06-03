@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using ShopOnline.Api.Data;
 using ShopOnline.Api.Repositories;
 using ShopOnline.Api.Services;
@@ -15,34 +17,44 @@ builder.Services.AddControllers();
 
 // Add Swagger + Bearer Token support
 builder.Services.AddEndpointsApiExplorer();
+
+var identityUrl = builder.Configuration["BaseURLSettings:ShopOnline_IdentityServerProvider_Url"];
+
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new() { Title = "ShopOnlineApi", Version = "v1" });
 
-    c.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+    c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
     {
-        Name = "Authorization",
-        Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-        Scheme = "Bearer",
-        BearerFormat = "JWT",
-        In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Input your JWT token here. E.g. Bearer {token}"
-    });
-
-    c.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
-    {
+        Type = SecuritySchemeType.OAuth2,
+        Flows = new OpenApiOAuthFlows
         {
-            new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+            AuthorizationCode = new OpenApiOAuthFlow
             {
-                Reference = new Microsoft.OpenApi.Models.OpenApiReference
-                {
-                    Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            new string[] {}
+                AuthorizationUrl = new Uri($"{identityUrl}/connect/authorize"),
+                TokenUrl = new Uri($"{identityUrl}/connect/token"),
+                //Scopes = new Dictionary<string, string> { { "shop_online_api", "Access API" } }
+                Scopes = new Dictionary<string, string>()
+            }
         }
     });
+
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "oauth2"
+                }
+            },
+            new[] { "shop_online_api" }
+        }
+    });
+
+
 });
 
 // Add EF Core with SQL Server
@@ -82,16 +94,6 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 
-//var authBuilder = builder.Services.AddAuthorizationBuilder();
-
-//authBuilder.SetDefaultPolicy(new AuthorizationPolicyBuilder()
-//    .AddAuthenticationSchemes("Bearer")
-//    .RequireAuthenticatedUser()
-//    .Build());
-
-//authBuilder.AddPolicy("RequireAdmin", policy =>
-//    policy.RequireRole("Admin"));
-
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("ApiScope", policy =>
@@ -130,7 +132,13 @@ app.Use(async (context, next) =>
 
 // Middlewares
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "ShopOnlineApi v1");
+    options.OAuthClientId("shop_online_swagger_client");
+    options.OAuthUsePkce();
+    options.OAuthScopes("openid", "profile", "shop_online_api");
+});
 
 app.UseHttpsRedirection();
 

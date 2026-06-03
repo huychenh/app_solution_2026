@@ -74,21 +74,36 @@ public static class Config
             AllowOfflineAccess = true,
             AlwaysIncludeUserClaimsInIdToken = true
         },
+
         new Client
         {
             ClientId = "shop_online_api_password_client",
             AllowedGrantTypes = GrantTypes.ResourceOwnerPassword,
-            ClientSecrets =
-            {
-                new Secret("secret".Sha256())
-            },
+            ClientSecrets = { new Secret("secret".Sha256()) },
             AllowedScopes =
             {
                 "shop_online_api",
                 IdentityServerConstants.StandardScopes.OpenId,
                 IdentityServerConstants.StandardScopes.Profile
             }
-        }
+        },
 
+        // Client Swagger UI đã được tối ưu đường dẫn động
+        new Client
+        {
+            ClientId = "shop_online_swagger_client",
+            ClientName = "Swagger UI for Shop Online API",
+            AllowedGrantTypes = GrantTypes.Code,
+            RequireClientSecret = false,
+            RequirePkce = true,
+            // Sử dụng url động từ config thay vì fix cứng localhost port
+            RedirectUris = { $"{url.ShopOnline_Api_Url}/swagger/oauth2-redirect.html" },
+            AllowedScopes =
+            {
+                IdentityServerConstants.StandardScopes.OpenId,
+                IdentityServerConstants.StandardScopes.Profile,
+                "shop_online_api"
+            }
+        }
     ];
 }
