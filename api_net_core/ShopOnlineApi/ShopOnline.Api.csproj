@@ -22,4 +22,8 @@
     <ProjectReference Include="..\ShopOnline.Common\ShopOnline.Common.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Integrations\" />
+  </ItemGroup>
+
 </Project>
