@@ -12,15 +12,15 @@ using ShopOnline.Api.Data;
 namespace ShopOnline.Api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260601075616_InitApi")]
-    partial class InitApi
+    [Migration("20260609011102_Init")]
+    partial class Init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.18")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -55,60 +55,19 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4111),
+                            CreatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(6238),
                             Description = "Electronics",
                             Name = "Electronics",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4112)
+                            UpdatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(6715)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4114),
+                            CreatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(7179),
                             Description = "Accessories",
                             Name = "Accessories",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4115)
+                            UpdatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(7179)
                         });
-                });
-
-            modelBuilder.Entity("ShopOnline.Api.Models.Payment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PayPalCaptureId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PayPalOrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("ShopOnline.Api.Models.Product", b =>
@@ -189,20 +148,20 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088),
+                            CreatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(2562),
                             Email = "emily.johnson@x.dummyjson.com",
                             FirstName = "Emily",
                             LastName = "Johnson",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088)
+                            UpdatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(3267)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091),
+                            CreatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(3740),
                             Email = "michael.williams@x.dummyjson.com",
                             FirstName = "Michael",
                             LastName = "Williams",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091)
+                            UpdatedDate = new DateTime(2026, 6, 9, 1, 11, 0, 117, DateTimeKind.Utc).AddTicks(3740)
                         });
                 });
 #pragma warning restore 612, 618
