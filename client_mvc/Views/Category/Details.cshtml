@@ -1,0 +1,72 @@
+@using ShopOnline.Common
+@model CategoryReadDto
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="container-fluid">
+    
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-light">
+            <h5 class="mb-0">Category Information</h5>
+        </div>
+
+        <div class="card-body">
+            <dl class="row mb-0">
+
+                <dt class="col-sm-3 text-muted">
+                    Category ID
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.Id
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    Name
+                </dt>
+                <dd class="col-sm-9 fw-semibold">
+                    @Model.Name
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    Description
+                </dt>
+                <dd class="col-sm-9">
+                    @(string.IsNullOrWhiteSpace(Model.Description)
+                        ? "No description available."
+                        : Model.Description)
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    Created Date
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.CreatedDate.ToString("yyyy-MM-dd HH:mm:ss")
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    Updated Date
+                </dt>
+                <dd class="col-sm-9">
+                    @Model.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss")
+                </dd>
+
+            </dl>
+        </div>
+
+        <div class="card-footer bg-white text-end">
+            <a asp-action="Edit"
+               asp-route-id="@Model.Id"
+               class="btn btn-primary">
+                Edit Category
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-outline-secondary ms-2">
+                Back to List
+            </a>
+        </div>
+    </div>
+
+</div>

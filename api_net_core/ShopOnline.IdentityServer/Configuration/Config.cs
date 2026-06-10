@@ -88,7 +88,6 @@ public static class Config
             }
         },
 
-        // Client Swagger UI đã được tối ưu đường dẫn động
         new Client
         {
             ClientId = "shop_online_swagger_client",
@@ -96,7 +95,6 @@ public static class Config
             AllowedGrantTypes = GrantTypes.Code,
             RequireClientSecret = false,
             RequirePkce = true,
-            // Sử dụng url động từ config thay vì fix cứng localhost port
             RedirectUris = { $"{url.ShopOnline_Api_Url}/swagger/oauth2-redirect.html" },
             AllowedScopes =
             {

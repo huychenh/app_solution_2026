@@ -71,7 +71,7 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(cfg => { }, typeof(Program).Assembly);
 
 // Add Authentication using Duende IdentityServer (OAuth2/OIDC)
 builder.Services.AddAuthentication("Bearer")
