@@ -52,10 +52,52 @@
                 </dd>
 
                 <dt class="col-sm-3 text-muted">
+                    Created By
+                </dt>
+                <dd class="col-sm-9">
+                    @(string.IsNullOrWhiteSpace(Model.CreatedBy) ? "N/A" : Model.CreatedBy)
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
                     Updated Date
                 </dt>
                 <dd class="col-sm-9">
                     @Model.UpdatedDate.ToString("yyyy-MM-dd HH:mm:ss")
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    Updated By
+                </dt>
+                <dd class="col-sm-9">
+                    @(string.IsNullOrWhiteSpace(Model.UpdatedBy) ? "N/A" : Model.UpdatedBy)
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    Status (Active)
+                </dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsActived)
+                    {
+                        <span class="badge bg-success">Active</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Inactive</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 text-muted">
+                    Is Deleted
+                </dt>
+                <dd class="col-sm-9">
+                    @if (Model.IsDeleted)
+                    {
+                        <span class="badge bg-danger">Deleted</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-outline-secondary text-dark border">No</span>
+                    }
                 </dd>
 
             </dl>

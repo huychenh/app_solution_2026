@@ -97,6 +97,14 @@ namespace client_mvc.Controllers
                     return RedirectToAction("Login", "Account");
                 }
 
+                var currentUserName = User?.Identity?.Name ?? "Unknown Admin";
+                model.CreatedBy = currentUserName;
+                model.UpdatedBy = currentUserName;
+                model.CreatedDate = DateTime.Now;
+                model.UpdatedDate = DateTime.Now;
+                model.IsActived = true;
+                model.IsDeleted = false;
+
                 using var client = _httpClientFactory.CreateClient();
                 client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 

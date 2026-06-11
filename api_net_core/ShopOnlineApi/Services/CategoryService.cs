@@ -30,11 +30,8 @@ namespace ShopOnline.Api.Services
 
         public async Task<CategoryReadDto> CreateAsync(CategoryCreateDto dto)
         {
-            var category = _mapper.Map<Category>(dto);
-            category.CreatedDate = DateTime.UtcNow;
-
+            var category = _mapper.Map<Category>(dto);            
             await _repo.AddAsync(category);
-
             return _mapper.Map<CategoryReadDto>(category);
         }
 
