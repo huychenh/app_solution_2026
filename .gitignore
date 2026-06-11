@@ -11,3 +11,5 @@ api_net_core/ShopOnline.Common/bin/
 api_net_core/ShopOnline.Common/obj/
 api_net_core/ShopOnline.IdentityServer/keys/is-signing-key-9B8940C4E17485965A9DF72992EB1FE1.json
 client_mvc/.vs/
+api_net_core/ShopOnline.Api.Tests/bin/
+api_net_core/ShopOnline.Api.Tests/obj/

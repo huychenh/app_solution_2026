@@ -27,7 +27,7 @@ namespace ShopOnline.Api.Controllers
             return category is null ? NotFound() : Ok(category);
         }
 
-        // POST: api/categories/create
+        // POST: api/categories/create        
         [Authorize(Policy = "RequireAdmin")]
         [HttpPost("create")]
         public async Task<ActionResult<CategoryReadDto>> Create(CategoryCreateDto dto)
