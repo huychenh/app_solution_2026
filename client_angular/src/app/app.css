@@ -1,0 +1,26 @@
+/* Base link style when inactive (Soft dark gray) */
+.nav-pills .nav-link {
+  color: #495057 !important;
+  font-weight: 500;
+  background: transparent;
+  transition: all 0.2s ease-in-out;
+}
+
+/* Custom Active State: Beautiful soft blue background with sharp blue text */
+.nav-pills .nav-link.active {
+  background-color: #e7f1ff !important; /* Soft energetic light blue */
+  color: #0d6efd !important;             /* Standard Corporate Blue text */
+  font-weight: 600;
+}
+
+/* Smooth hover transition for inactive items */
+.hover-menu:hover:not(.active) {
+  background-color: #f8f9fa !important;  /* Ultra light gray */
+  color: #0d6efd !important;             /* Text shifts to blue */
+  padding-left: 20px !important;         /* Micro-interaction sliding effect */
+}
+
+/* Subtle border lines layout helper */
+.border-light-subtle {
+  border-color: #e9ecef !important;
+}

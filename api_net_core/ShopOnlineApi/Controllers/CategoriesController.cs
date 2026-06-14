@@ -10,7 +10,7 @@ namespace ShopOnline.Api.Controllers
     public class CategoriesController(ICategoryService service) : ControllerBase
     {
         // GET: api/categories/list
-        [Authorize]
+        //[Authorize]
         [HttpGet("list")]
         public async Task<ActionResult<IEnumerable<CategoryReadDto>>> GetAll()
         {
