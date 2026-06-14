@@ -17,7 +17,7 @@ namespace ShopOnline.Api.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.18")
+                .HasAnnotation("ProductVersion", "10.0.0")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -30,6 +30,10 @@ namespace ShopOnline.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
@@ -37,7 +41,17 @@ namespace ShopOnline.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -52,60 +66,27 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4111),
+                            CreatedBy = "System",
+                            CreatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 405, DateTimeKind.Utc).AddTicks(9670),
                             Description = "Electronics",
+                            IsActived = true,
+                            IsDeleted = false,
                             Name = "Electronics",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4112)
+                            UpdatedBy = "System",
+                            UpdatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 406, DateTimeKind.Utc).AddTicks(142)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4114),
+                            CreatedBy = "System",
+                            CreatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 406, DateTimeKind.Utc).AddTicks(2403),
                             Description = "Accessories",
+                            IsActived = true,
+                            IsDeleted = false,
                             Name = "Accessories",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4115)
+                            UpdatedBy = "System",
+                            UpdatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 406, DateTimeKind.Utc).AddTicks(2404)
                         });
-                });
-
-            modelBuilder.Entity("ShopOnline.Api.Models.Payment", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Currency")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PayPalCaptureId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PayPalOrderId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("UpdatedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Payments");
                 });
 
             modelBuilder.Entity("ShopOnline.Api.Models.Product", b =>
@@ -116,8 +97,22 @@ namespace ShopOnline.Api.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -129,6 +124,13 @@ namespace ShopOnline.Api.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
+                    b.Property<string>("UpdatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
                     b.HasKey("Id");
 
                     b.ToTable("Products");
@@ -137,18 +139,30 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
+                            CreatedBy = "System",
+                            CreatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 404, DateTimeKind.Utc).AddTicks(682),
                             Description = "Apple flagship",
+                            IsActived = true,
+                            IsDeleted = false,
                             Name = "iPhone 15",
                             Price = 999m,
-                            Quantity = 10
+                            Quantity = 10,
+                            UpdatedBy = "System",
+                            UpdatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 404, DateTimeKind.Utc).AddTicks(1155)
                         },
                         new
                         {
                             Id = 2,
+                            CreatedBy = "System",
+                            CreatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 404, DateTimeKind.Utc).AddTicks(3534),
                             Description = "Samsung flagship",
+                            IsActived = true,
+                            IsDeleted = false,
                             Name = "Samsung S24",
                             Price = 899m,
-                            Quantity = 15
+                            Quantity = 15,
+                            UpdatedBy = "System",
+                            UpdatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 404, DateTimeKind.Utc).AddTicks(3535)
                         });
                 });
 
@@ -159,6 +173,10 @@ namespace ShopOnline.Api.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
@@ -171,7 +189,17 @@ namespace ShopOnline.Api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsActived")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UpdatedBy")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -186,20 +214,28 @@ namespace ShopOnline.Api.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088),
+                            CreatedBy = "System",
+                            CreatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 405, DateTimeKind.Utc).AddTicks(4306),
                             Email = "emily.johnson@x.dummyjson.com",
                             FirstName = "Emily",
+                            IsActived = true,
+                            IsDeleted = false,
                             LastName = "Johnson",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4088)
+                            UpdatedBy = "System",
+                            UpdatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 405, DateTimeKind.Utc).AddTicks(4788)
                         },
                         new
                         {
                             Id = 2,
-                            CreatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091),
+                            CreatedBy = "System",
+                            CreatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 405, DateTimeKind.Utc).AddTicks(7050),
                             Email = "michael.williams@x.dummyjson.com",
                             FirstName = "Michael",
+                            IsActived = true,
+                            IsDeleted = false,
                             LastName = "Williams",
-                            UpdatedDate = new DateTime(2026, 6, 1, 7, 56, 16, 474, DateTimeKind.Utc).AddTicks(4091)
+                            UpdatedBy = "System",
+                            UpdatedDate = new DateTime(2026, 6, 10, 12, 59, 2, 405, DateTimeKind.Utc).AddTicks(7051)
                         });
                 });
 #pragma warning restore 612, 618

@@ -18,8 +18,34 @@ namespace ShopOnline.Api.Data
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Product>().HasData(
-                new Product { Id = 1, Name = "iPhone 15", Price = 999, Quantity = 10, Description = "Apple flagship" },
-                new Product { Id = 2, Name = "Samsung S24", Price = 899, Quantity = 15, Description = "Samsung flagship" }
+                new Product 
+                { 
+                    Id = 1, 
+                    Name = "iPhone 15", 
+                    Price = 999, 
+                    Quantity = 10, 
+                    Description = "Apple flagship",
+                    CreatedDate = DateTime.UtcNow,
+                    UpdatedDate = DateTime.UtcNow,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                    IsActived = true,
+                    IsDeleted = false
+                },
+                new Product 
+                { 
+                    Id = 2, 
+                    Name = "Samsung S24", 
+                    Price = 899, 
+                    Quantity = 15, 
+                    Description = "Samsung flagship",
+                    CreatedDate = DateTime.UtcNow,
+                    UpdatedDate = DateTime.UtcNow,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                    IsActived = true,
+                    IsDeleted = false
+                }
             );
 
             modelBuilder.Entity<User>().HasData(
@@ -30,7 +56,11 @@ namespace ShopOnline.Api.Data
                     LastName = "Johnson",
                     Email = "emily.johnson@x.dummyjson.com",
                     CreatedDate = DateTime.UtcNow,
-                    UpdatedDate = DateTime.UtcNow
+                    UpdatedDate = DateTime.UtcNow,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                    IsActived = true,
+                    IsDeleted = false
                 },
                 new User
                 {
@@ -39,10 +69,14 @@ namespace ShopOnline.Api.Data
                     LastName = "Williams",
                     Email = "michael.williams@x.dummyjson.com",
                     CreatedDate = DateTime.UtcNow,
-                    UpdatedDate = DateTime.UtcNow
+                    UpdatedDate = DateTime.UtcNow,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                    IsActived = true,
+                    IsDeleted = false
                 }
             );
-
+            
             modelBuilder.Entity<Category>().HasData(
                 new Category
                 {
@@ -50,7 +84,12 @@ namespace ShopOnline.Api.Data
                     Name = "Electronics",
                     Description = "Electronics",
                     CreatedDate = DateTime.UtcNow,
-                    UpdatedDate = DateTime.UtcNow
+                    UpdatedDate = DateTime.UtcNow,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                    IsActived = true,
+                    IsDeleted = false
+
                 },
                 new Category
                 {
@@ -58,10 +97,20 @@ namespace ShopOnline.Api.Data
                     Name = "Accessories",
                     Description = "Accessories",
                     CreatedDate = DateTime.UtcNow,
-                    UpdatedDate = DateTime.UtcNow
+                    UpdatedDate = DateTime.UtcNow,
+                    CreatedBy = "System",
+                    UpdatedBy = "System",
+                    IsActived = true,
+                    IsDeleted = false
                 }
             );
 
+        }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.ConfigureWarnings(warnings =>
+                warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
         }
 
     }

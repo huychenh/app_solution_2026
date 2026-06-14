@@ -1,38 +1,97 @@
-<main class="main">
-  <nav class="menu">
-    <strong>ShopOnline</strong>
-    <a
-      routerLink="/"
-      routerLinkActive="active"
-      [routerLinkActiveOptions]="{ exact: true }"
-    >
-      Home
-    </a>
+<div class="container-fluid flex-nowrap pl-0">
+  <div class="row g-0 vh-100 overflow-hidden">
 
-    <a routerLink="/categories" routerLinkActive="active">
-      Category
-    </a>
+    <div
+      class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-white d-flex flex-column justify-content-between border-end border-light-subtle shadow-sm">
+      <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-4 min-vh-100 w-100">
 
-   <!-- LOGIN/LOGOUT DISPLAY -->
-  <div *ngIf="user$ | async as user; else guest" class="user-panel">
-    <span class="user">
-      Hi {{ user.profile['name'] || 'User' }}
-      (role: {{ user.profile['role'] || 'Member' }} )
-    </span> | 
-    <a href="#" (click)="logout()">Logout</a>
-  </div>
+        <a routerLink="/"
+          class="d-flex align-items-center pb-4 mb-md-0 me-md-auto text-dark text-decoration-none border-bottom border-light-subtle w-100">
+          <span class="fs-5 fw-bold text-primary text-nowrap">
+            <i class="bi bi-layer-forward text-primary-gradient"></i> ShopOnline 2026
+          </span>
+        </a>
 
-  <ng-template #guest>
-    <div class="user-panel">
-      <span class="guest">Hi Guest</span> | 
-      <a href="#" (click)="login()">Login</a>
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start w-100 mt-4 gap-1"
+          id="menu">
+
+          <li class="w-100">
+            <a routerLink="/home" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+              class="nav-link text-secondary px-3 py-2.5 rounded d-flex align-items-center gap-2 hover-menu">
+              <i class="bi bi-house-door fs-5"></i>
+              <span class="ms-1 d-none d-sm-inline">Home</span>
+            </a>
+          </li>
+
+
+          <li class="w-100">
+            <a routerLink="/categories" routerLinkActive="active"
+              class="nav-link text-secondary px-3 py-2.5 rounded d-flex align-items-center gap-2 hover-menu">
+              <i class="bi bi-tags fs-5"></i>
+              <span class="ms-1 d-none d-sm-inline">Categories</span>
+            </a>
+          </li>
+
+          <li class="w-100">
+            <a routerLink="/products" routerLinkActive="active"
+              class="nav-link text-secondary px-3 py-2.5 rounded d-flex align-items-center gap-2 hover-menu">
+              <i class="bi bi-box-seam fs-5"></i>
+              <span class="ms-1 d-none d-sm-inline">Products</span>
+            </a>
+          </li>
+
+
+        </ul>
+
+      </div>
     </div>
-  </ng-template>
 
+    <div class="col col-md-9 col-xl-10 d-flex flex-column vh-100 overflow-y-auto bg-body-tertiary">
 
-  </nav>
+      <header
+        class="navbar navbar-expand navbar-white bg-white border-bottom px-4 py-3 sticky-top shadow-xs d-flex justify-content-between align-items-center">
 
-  <div class="content">
-    <router-outlet></router-outlet>
+        <span class="navbar-text text-muted small fw-medium">
+          <i class="bi bi-laptop me-1"></i> Control Panel Management Hub
+        </span>
+
+        <div class="d-flex align-items-center">
+          @if (authService.isLoggedIn) {
+          <div class="d-flex align-items-center gap-3">
+            <div class="d-flex align-items-center text-secondary text-decoration-none">
+              <i class="bi bi-person-circle fs-5 me-2 text-success"></i>
+              <span class="small fw-semibold text-dark">
+                Hello, {{ authService.identityClaims?.['name'] || 'User' }}
+                @if (authService.identityClaims?.['role']) {
+                <span
+                  class="badge bg-secondary-subtle text-secondary border border-secondary-subtle ms-1 small fw-normal">
+                  {{ authService.identityClaims?.['role'] }}
+                </span>
+                }
+              </span>
+            </div>
+            <button (click)="authService.logout()"
+              class="btn btn-sm btn-outline-danger d-flex align-items-center gap-1.5 px-3 py-1.5 rounded-pill shadow-xs">
+              <i class="bi bi-box-arrow-right fs-6"></i>
+              <span>Logout</span>
+            </button>
+          </div>
+          } @else {
+          <button (click)="authService.login()"
+            class="btn btn-sm btn-primary d-flex align-items-center gap-1.5 px-4 py-1.5 rounded-pill shadow-sm fw-medium">
+            <i class="bi bi-box-arrow-in-right fs-6"></i>
+            <span>Sign In</span>
+          </button>
+          }
+        </div>
+
+      </header>
+
+      <main class="p-4 flex-grow-1">
+        <router-outlet></router-outlet>
+      </main>
+
+    </div>
+
   </div>
-</main>
+</div>

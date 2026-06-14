@@ -1,32 +1,16 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
-import { Observable } from 'rxjs';
-import { AuthService } from './services/auth.service';
-import { User } from 'oidc-client-ts';
-import { CommonModule } from '@angular/common';
+import { AuthService } from './core/auth/auth.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, RouterLink, RouterLinkActive, CommonModule],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
 export class App {
-  protected readonly title = signal('simple-crud');
+  protected readonly title = signal('client_angular');
 
-
-  user$: Observable<User | null>;
-
-  constructor(private auth: AuthService) {
-    this.user$ = this.auth.user$;
-  }
-
-  login() {
-    this.auth.login();
-  }
-
-  logout() {
-    this.auth.logout();
-  }
+  authService = inject(AuthService);
 }
