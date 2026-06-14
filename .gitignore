@@ -13,3 +13,4 @@ api_net_core/ShopOnline.IdentityServer/keys/is-signing-key-9B8940C4E17485965A9DF
 client_mvc/.vs/
 api_net_core/ShopOnline.Api.Tests/bin/
 api_net_core/ShopOnline.Api.Tests/obj/
+client_angular/old/
