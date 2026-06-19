@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RabbitMQ.Client;
 using ShopOnline.Api.Services;
 using ShopOnline.Common;
+using ShopOnline.Common.Messages;
+using System.Text;
+using System.Text.Json;
 
 namespace ShopOnline.Api.Controllers
 {
@@ -32,7 +36,48 @@ namespace ShopOnline.Api.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<CategoryReadDto>> Create(CategoryCreateDto dto)
         {
+            // 1. Your existing logic: Save category via service layer
             var createdDto = await service.CreateAsync(dto);
+
+            // 2. NEW: Publish event to RabbitMQ Topic Exchange asynchronously
+            try
+            {
+                var factory = new ConnectionFactory() { HostName = "localhost" };
+                using var connection = await factory.CreateConnectionAsync();
+                using var channel = await connection.CreateChannelAsync();
+
+                // 🛠️ FIX 1: Declare a Topic Exchange instead of a hardcoded queue
+                string exchangeName = "shop-online-exchange";
+                await channel.ExchangeDeclareAsync(exchange: exchangeName,
+                                                   type: ExchangeType.Topic,
+                                                   durable: true);
+
+                // Map data from your created DTO to the shared message contract
+                var categoryEvent = new CategoryCreatedEvent
+                {
+                    Id = createdDto.Id,
+                    Name = createdDto.Name,
+                    CreatedAt = DateTime.UtcNow
+                };
+
+                var messageJson = JsonSerializer.Serialize(categoryEvent);
+                var body = Encoding.UTF8.GetBytes(messageJson);
+
+                // 🛠️ FIX 2: Publish to the TOPIC EXCHANGE with a structured routing key
+                // We use "category.created" so any consumer binding to "category.*" can receive it
+                await channel.BasicPublishAsync(exchange: exchangeName,
+                                                routingKey: "category.created",
+                                                mandatory: true,
+                                                body: body);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception here if RabbitMQ server is down, 
+                // ensuring the main API response doesn't fail if messaging fails.
+                Console.WriteLine($"[RabbitMQ Error] Failed to publish message: {ex.Message}");
+            }
+
+            // 3. Your existing logic: Return the standard 201 Created response
             return CreatedAtAction(nameof(GetById), new { id = createdDto.Id }, createdDto);
         }
 
