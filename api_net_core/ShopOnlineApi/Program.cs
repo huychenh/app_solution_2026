@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ShopOnline.Api.BackgroundServices;
 using ShopOnline.Api.Data;
 using ShopOnline.Api.Repositories;
 using ShopOnline.Api.Services;
@@ -120,6 +121,10 @@ builder.Services.AddCors(options =>
         .AllowCredentials();
     });
 });
+
+// Register the RabbitMQ background consumer
+builder.Services.AddHostedService<CategoryConsumerService>();
+builder.Services.AddHostedService<CategorySearchService>();
 
 var app = builder.Build();
 
