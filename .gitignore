@@ -14,3 +14,12 @@ client_mvc/.vs/
 api_net_core/ShopOnline.Api.Tests/bin/
 api_net_core/ShopOnline.Api.Tests/obj/
 client_angular/old/
+IMediator/ShopOnline.IdentityServer/obj/
+IMediator/ShopOnlineApi/bin/
+IMediator/ShopOnlineApi/obj/
+IMediator/ShopOnline.IdentityServer/bin/
+IMediator/ShopOnline.Common/obj/
+IMediator/ShopOnline.Common/bin/
+IMediator/ShopOnline.Api.Tests/obj/
+IMediator/ShopOnline.Api.Tests/bin/
+IMediator/.vs/
