@@ -1,0 +1,67 @@
+@model CategoryCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Category";
+}
+
+<h2>Create Category</h2>
+
+<form asp-action="Create" method="post" id="createCategoryForm">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="4"></textarea>        
+    </div>
+
+    <input type="hidden" asp-for="RecaptchaToken" id="hfRecaptchaToken" />
+
+    <div class="mb-3">
+        <div class="g-recaptcha" 
+             data-sitekey="6LeErjgtAAAAAIH4D1IfcNhYvgnj7ZUCwGyMeHyS" 
+             data-callback="onRecaptchaSuccess"
+             data-expired-callback="onRecaptchaExpired"></div>
+        <span asp-validation-for="RecaptchaToken" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <script>
+        // Automatically triggered when the user successfully completes the reCAPTCHA challenge
+        function onRecaptchaSuccess(token) {
+            var tokenInput = document.getElementById('hfRecaptchaToken');
+            tokenInput.value = token;
+
+            // Force jQuery Validation to re-evaluate the hidden input and clear the red error message immediately
+            if (window.jQuery && $.fn.validate) {
+                $("#createCategoryForm").validate().element("#hfRecaptchaToken");
+            }
+        }
+
+        // Triggered when the reCAPTCHA token expires (typically after 2 minutes)
+        function onRecaptchaExpired() {
+            var tokenInput = document.getElementById('hfRecaptchaToken');
+            tokenInput.value = "";
+
+            // Force jQuery Validation to re-evaluate and display the error message again
+            if (window.jQuery && $.fn.validate) {
+                $("#createCategoryForm").validate().element("#hfRecaptchaToken");
+            }
+        }
+    </script>
+}

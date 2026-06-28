@@ -23,3 +23,6 @@ IMediator/ShopOnline.Common/bin/
 IMediator/ShopOnline.Api.Tests/obj/
 IMediator/ShopOnline.Api.Tests/bin/
 IMediator/.vs/
+reCAPTCHA/api_net_core/.vs/
+reCAPTCHA/client_mvc/bin/
+reCAPTCHA/client_mvc/obj/
