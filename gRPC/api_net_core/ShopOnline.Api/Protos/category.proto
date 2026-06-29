@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+option csharp_namespace = "ShopOnline.Api";
+
+package category;
+
+// The gRPC Service handles category-related operations
+service CategoryGrpc {
+  // The single and only method to fetch all categories from the database
+  rpc GetCategoryList (EmptyRequest) returns (CategoryListResponse);
+}
+
+// An empty message used as a parameter for methods that don't require arguments
+message EmptyRequest {}
+
+// Individual category details structure
+message CategoryResponse {
+  int32 id = 1;
+  string name = 2;
+  string description = 3;
+  string createdDate = 4;   // Protobuf doesn't have DateTime, string is the easiest for formatting
+  string updatedDate = 5;
+  string createdBy = 6;
+  string updatedBy = 7;
+  bool isActived = 8;       // Note: mapped to bool
+  bool isDeleted = 9;
+}
+
+// Wrapper containing the collection of categories returned to the client
+message CategoryListResponse {
+  repeated CategoryResponse categories = 1; // "repeated" represents a List<CategoryResponse> in C#
+}
