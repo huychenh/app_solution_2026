@@ -43,3 +43,6 @@ reCAPTCHA/api_net_core/ShopOnline.Api/obj/
 reCAPTCHA/api_net_core/ShopOnline.Api.Tests/obj/
 reCAPTCHA/api_net_core/ShopOnline.IdentityServer/obj/
 gRPC/api_net_core/.vs/
+Interview/
+Redis/api_net_core/.vs/
+reCAPTCHA/api_net_core/ShopOnline.Api.Tests/bin/
