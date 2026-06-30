@@ -1,0 +1,86 @@
+services:
+  # 1. SQL Server Database Service
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=Password@#123
+    ports:
+      - "1434:1433"
+    volumes:
+      - shop-db-data:/var/opt/mssql
+    networks:
+      - shop-net
+
+  # 2. RabbitMQ Message Broker Service
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    networks:
+      - shop-net
+
+  # 3. Authentication & Authorization Service (IdentityServer)
+  identity-server:
+    image: shop-online-identity:latest
+    container_name: identity-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PROJECT_DIR=ShopOnline.IdentityServer
+        - PROJECT_NAME=ShopOnline.IdentityServer
+    ports:
+      - "5001:5001"                                 # Bên ngoài gọi 5001, bên trong container mở đúng cổng HTTPS 5001
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5001              # Ép Kestrel chạy HTTPS trên cổng 5001
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticPassword123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ShopOnline2026;User Id=;Password=;TrustServerCertificate=True
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https:ro       # Chia sẻ chứng chỉ SSL từ máy thật vào container
+      - identity-keys:/app/keys
+    depends_on:
+      - sqlserver
+    networks:
+      - shop-net
+
+  # 4. Core Web API Service
+  shop-api:
+    image: shop-online-api:latest
+    container_name: shop-api
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - PROJECT_DIR=ShopOnlineApi
+        - PROJECT_NAME=ShopOnline.Api
+    ports:
+      - "5000:5000"                                 # Bên ngoài gọi 5000, bên trong container mở đúng cổng HTTPS 5000
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:5000              # Ép Kestrel chạy HTTPS trên cổng 5000
+      - ASPNETCORE_Kestrel__Certificates__Default__Password=crypticPassword123
+      - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
+      - RABBITMQ_HOST=rabbitmq
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=ShopOnline2026;User Id=;Password=;TrustServerCertificate=True
+      - BaseURLSettings__Internal_IdentityServer_Url=https://identity-server:5001 # Gọi nội bộ bằng HTTPS qua cổng 5001
+    volumes:
+      - ${USERPROFILE}\.aspnet\https:/https:ro       # Chia sẻ chứng chỉ SSL từ máy thật vào container
+    depends_on:
+      - sqlserver
+      - rabbitmq
+    networks:
+      - shop-net
+
+volumes:
+  shop-db-data:
+  identity-keys:
+
+networks:
+  shop-net:
+    driver: bridge

@@ -47,3 +47,5 @@ Interview/
 Redis/api_net_core/.vs/
 reCAPTCHA/api_net_core/ShopOnline.Api.Tests/bin/
 RabbitMQ/.vs/
+Docker/.vs/
+Docker/api_net_core/.vs/

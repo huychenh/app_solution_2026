@@ -1,0 +1,37 @@
+#Clear Docker Image & Container:
+docker system prune -a --volumes
+
+#Build docker image for api project:
+docker build --no-cache --build-arg PROJECT_DIR=ShopOnlineApi --build-arg PROJECT_NAME=ShopOnline.Api -t shoponline-api:latest .
+
+#Add image to docker container:
+docker run -d -p 8080:8080 --name my-running-api shoponline-api:latest
+
+#Build docker image for identity-server project:
+docker build --no-cache --build-arg PROJECT_DIR=ShopOnline.IdentityServer --build-arg PROJECT_NAME=ShopOnline.IdentityServer -t shoponline-identity:latest .
+
+#Add identity-server image to docker container:
+docker run -d -p 5001:8080 --name my-identity-server shoponline-identity:latest
+
+#Docker Network
+#1. Tạo một mạng ảo dùng chung (Bridge Network)
+docker network create shoponline-network
+
+#2. Nối các container đang chạy vào mạng này
+docker network connect shoponline-network my-running-api
+docker network connect shoponline-network my-identity-server
+
+#Dùng cho file docker-compose.yml
+#Add trust
+dotnet dev-certs https --trust
+dotnet dev-certs https -ep "$env:USERPROFILE\.aspnet\https\aspnetapp.pfx" -p crypticPassword123
+
+docker compose down
+
+docker compose up --build -d
+
+#api only
+docker compose up --build -d shop-api
+
+#Check output:
+https://localhost:5000/swagger
