@@ -49,3 +49,5 @@ reCAPTCHA/api_net_core/ShopOnline.Api.Tests/bin/
 RabbitMQ/.vs/
 Docker/.vs/
 Docker/api_net_core/.vs/
+api_net_core/ShopOnline.Api/bin/
+api_net_core/ShopOnline.Api/obj/
