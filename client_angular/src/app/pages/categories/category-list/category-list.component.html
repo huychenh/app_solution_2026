@@ -12,189 +12,233 @@
   </div>
 </div>
 
+<!-- Danh sách Categories dạng Grid thay thế Table -->
 <div class="card border-0 shadow-sm">
-
   <div class="card-body p-0">
+    
+    <!-- Header của bảng -->
+    <div class="d-none d-lg-flex row g-0 p-3 align-items-center border-bottom bg-light fw-bold text-secondary text-uppercase small">
+      <div class="col-1">ID</div>
+      <div class="col-2">Name</div>
+      <div class="col-2">Description</div>
+      <div class="col-2">Created Date</div>
+      <div class="col-1">Created By</div>
+      <div class="col-2">Updated Date</div>
+      <div class="col-1">Status</div>
+      <div class="col-1 text-center">Actions</div>
+    </div>
 
-    <div class="table-responsive">
+    <!-- Body của bảng -->
+    <div class="div-table-body">
+      @for (item of categories(); track item.id) {
+      <div class="row g-0 p-3 align-items-center border-bottom item-row-hover">
+        
+        <!-- ID -->
+        <div class="col-12 col-lg-1 mb-2 mb-lg-0">
+          <span class="d-lg-none text-muted small fw-bold d-block">ID:</span>
+          <span class="fw-bold text-primary">#{{ item.id }}</span>
+        </div>
 
-      <table class="table table-hover align-middle mb-0">
+        <!-- Name -->
+        <div class="col-12 col-lg-2 mb-2 mb-lg-0">
+          <span class="d-lg-none text-muted small fw-bold d-block">Name:</span>
+          <div class="fw-semibold text-dark">{{ item.name }}</div>
+        </div>
 
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Created Date</th>
-            <th>Created By</th>
-            <th>Updated Date</th>
-            <th>Updated By</th>
-            <th>Status</th>
-            <th class="text-center">Actions</th>
-          </tr>
-        </thead>
+        <!-- Description -->
+        <div class="col-12 col-lg-2 mb-2 mb-lg-0">
+          <span class="d-lg-none text-muted small fw-bold d-block">Description:</span>
+          @if (item.description) {
+            <span class="text-muted text-break">{{ item.description }}</span>
+          } @else {
+            <span class="text-secondary fst-italic">No description</span>
+          }
+        </div>
 
-        <tbody>
+        <!-- Created Date -->
+        <div class="col-12 col-lg-2 mb-2 mb-lg-0">
+          <span class="d-lg-none text-muted small fw-bold d-block">Created Date:</span>
+          <small class="text-muted">
+            <i class="bi bi-calendar-event me-1"></i>
+            {{ item.createdDate | date:'dd/MM/yyyy HH:mm' }}
+          </small>
+        </div>
 
-          @if (categories && categories.length > 0) {
+        <!-- Created By -->
+        <div class="col-12 col-lg-1 mb-2 mb-lg-0">
+          <span class="d-lg-none text-muted small fw-bold d-block">Created By:</span>
+          <span class="badge bg-light text-dark border">
+            {{ item.createdBy || 'System' }}
+          </span>
+        </div>
 
-          @for (item of categories; track item.id) {
-
-          <tr>
-
-            <td>
-              <span class="fw-bold text-primary">
-                {{ item.id }}
-              </span>
-            </td>
-
-            <td>
-              <div class="fw-semibold">
-                {{ item.name }}
-              </div>
-            </td>
-
-            <td>
-
-              @if (item.description) {
-              <span class="text-muted">
-                {{ item.description }}
-              </span>
-              } @else {
-              <span class="text-secondary fst-italic">
-                No description
-              </span>
-              }
-
-            </td>
-
-            <td>
-              <small>
-                <i class="bi bi-calendar-event me-1"></i>
-                {{ item.createdDate | date:'dd/MM/yyyy HH:mm' }}
-              </small>
-            </td>
-
-            <td>
-              <span class="badge bg-light text-dark border">
-                {{ item.createdBy || 'System' }}
-              </span>
-            </td>
-
-            <td>
-
-              @if (item.updatedDate) {
-              <small>
+        <!-- Updated Date / Updated By -->
+        <div class="col-12 col-lg-2 mb-2 mb-lg-0">
+          <span class="d-lg-none text-muted small fw-bold d-block">Updated Info:</span>
+          @if (item.updatedDate) {
+            <div class="d-flex flex-column gap-1">
+              <small class="text-muted">
                 <i class="bi bi-clock-history me-1"></i>
                 {{ item.updatedDate | date:'dd/MM/yyyy HH:mm' }}
               </small>
-              } @else {
-              <span class="text-secondary fst-italic">
-                Never updated
+              <span class="badge bg-light text-dark border align-self-start">
+                By: {{ item.updatedBy || 'N/A' }}
               </span>
-              }
-
-            </td>
-
-            <td>
-
-              @if (item.updatedBy) {
-              <span class="badge bg-light text-dark border">
-                {{ item.updatedBy }}
-              </span>
-              } @else {
-              <span class="text-secondary fst-italic">
-                N/A
-              </span>
-              }
-
-            </td>
-
-            <td>
-
-              @if (item.isDeleted) {
-
-              <span class="badge rounded-pill bg-danger">
-                Deleted
-              </span>
-
-              } @else if (item.isActived) {
-
-              <span class="badge rounded-pill bg-success">
-                Active
-              </span>
-
-              } @else {
-
-              <span class="badge rounded-pill bg-warning text-dark">
-                Inactive
-              </span>
-
-              }
-
-            </td>
-
-            <td>
-
-              <div class="d-flex justify-content-center gap-2">
-
-                <div class="d-flex gap-3">
-
-                  <a [routerLink]="['/categories/detail', item.id]" class="text-info text-decoration-none fw-semibold">
-                    Detail
-                  </a>
-
-                  <a [routerLink]="['/categories/edit', item.id]" class="text-primary text-decoration-none fw-semibold">
-                    Edit
-                  </a>
-
-                  <a href="javascript:void(0)" class="text-danger text-decoration-none fw-semibold"
-                    (click)="onDelete(item.id)">
-                    Delete
-                  </a>
-
-                </div>
-
-              </div>
-
-            </td>
-
-          </tr>
-
-          }
-
+            </div>
           } @else {
-
-          <tr>
-
-            <td colspan="9">
-
-              <div class="empty-state text-center py-5">
-
-                <i class="bi bi-folder-x display-3 text-secondary"></i>
-
-                <h5 class="mt-3 mb-2">
-                  No Categories Found
-                </h5>
-
-                <p class="text-muted mb-0">
-                  There are currently no categories in the system.
-                </p>
-
-              </div>
-
-            </td>
-
-          </tr>
-
+            <span class="text-secondary fst-italic">Never updated</span>
           }
+        </div>
 
-        </tbody>
+        <!-- Status -->
+        <div class="col-12 col-lg-1 mb-3 mb-lg-0">
+          <span class="d-lg-none text-muted small fw-bold d-block mb-1">Status:</span>
+          @if (item.isDeleted) {
+            <span class="badge rounded-pill bg-danger">Deleted</span>
+          } @else if (item.isActived) {
+            <span class="badge rounded-pill bg-success">Active</span>
+          } @else {
+            <span class="badge rounded-pill bg-warning text-dark">Inactive</span>
+          }
+        </div>
 
-      </table>
+        <!-- Actions -->
+        <div class="col-12 col-lg-1">
+          <span class="d-lg-none text-muted small fw-bold d-block mb-2">Actions:</span>
+          <div class="d-flex justify-content-lg-center gap-3">
+            <a href="javascript:void(0)" class="text-info text-decoration-none fw-semibold"
+               data-bs-toggle="modal" 
+               data-bs-target="#categoryDetailModal"
+               (click)="selectedCategory.set(item)">
+              Detail
+            </a>
 
+            <a [routerLink]="['/categories/edit', item.id]" class="text-primary text-decoration-none fw-semibold">
+              Edit
+            </a>
+
+            <a href="javascript:void(0)" class="text-danger text-decoration-none fw-semibold"
+               (click)="onDelete(item.id)">
+              Delete
+            </a>
+          </div>
+        </div>
+
+      </div>
+      } @empty {
+      <div class="empty-state text-center py-5">
+        <i class="bi bi-folder-x display-3 text-secondary"></i>
+        <h5 class="mt-3 mb-2">No Categories Found</h5>
+        <p class="text-muted mb-0">
+          There are currently no categories in the system.
+        </p>
+      </div>
+      }
     </div>
 
   </div>
+</div>
 
+<!-- Modal Detail Category -->
+<div class="modal fade" id="categoryDetailModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow">
+      
+      <!-- Modal Header -->
+      <div class="modal-header bg-light">
+        <h5 class="modal-title fw-bold text-dark">
+          <i class="bi bi-info-circle me-2 text-info"></i>Category Details
+        </h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="modal-body p-0">
+        @if (selectedCategory()) {
+          <div class="div-table-rows">
+            
+            <!-- Row 1: ID -->
+            <div class="d-flex align-items-center p-3 border-bottom row-striped">
+              <div class="text-muted fw-semibold ps-2" style="width: 35%;">Category ID</div>
+              <div class="fw-bold text-primary">#{{ selectedCategory()?.id }}</div>
+            </div>
+
+            <!-- Row 2: Name -->
+            <div class="d-flex align-items-center p-3 border-bottom">
+              <div class="text-muted fw-semibold ps-2" style="width: 35%;">Category Name</div>
+              <div class="fw-semibold text-dark">{{ selectedCategory()?.name }}</div>
+            </div>
+
+            <!-- Row 3: Description -->
+            <div class="d-flex align-items-center p-3 border-bottom row-striped">
+              <div class="text-muted fw-semibold ps-2" style="width: 35%;">Description</div>
+              <div>
+                @if (selectedCategory()?.description) {
+                  <span class="text-secondary">{{ selectedCategory()?.description }}</span>
+                } @else {
+                  <span class="text-muted fst-italic">No description available.</span>
+                }
+              </div>
+            </div>
+
+            <!-- Row 4: Created Info -->
+            <div class="d-flex align-items-center p-3 border-bottom">
+              <div class="text-muted fw-semibold ps-2" style="width: 35%;">Created Info</div>
+              <div class="d-flex flex-wrap align-items-center gap-2">
+                <span class="badge bg-light text-dark border">{{ selectedCategory()?.createdBy || 'System' }}</span>
+                <small class="text-muted">
+                  <i class="bi bi-calendar-event me-1"></i>{{ selectedCategory()?.createdDate | date:'dd/MM/yyyy HH:mm' }}
+                </small>
+              </div>
+            </div>
+
+            <!-- Row 5: Updated Info -->
+            <div class="d-flex align-items-center p-3 border-bottom row-striped">
+              <div class="text-muted fw-semibold ps-2" style="width: 35%;">Updated Info</div>
+              <div>
+                @if (selectedCategory()?.updatedDate) {
+                  <div class="d-flex flex-wrap align-items-center gap-2">
+                    <span class="badge bg-light text-dark border">{{ selectedCategory()?.updatedBy || 'N/A' }}</span>
+                    <small class="text-muted">
+                      <i class="bi bi-clock-history me-1"></i>{{ selectedCategory()?.updatedDate | date:'dd/MM/yyyy HH:mm' }}
+                    </small>
+                  </div>
+                } @else {
+                  <span class="text-muted fst-italic small">Never updated</span>
+                }
+              </div>
+            </div>
+
+            <!-- Row 6: Status -->
+            <div class="d-flex align-items-center p-3">
+              <div class="text-muted fw-semibold ps-2" style="width: 35%;">Status</div>
+              <div>
+                @if (selectedCategory()?.isDeleted) {
+                  <span class="badge rounded-pill bg-danger">Deleted</span>
+                } @else if (selectedCategory()?.isActived) {
+                  <span class="badge rounded-pill bg-success">Active</span>
+                } @else {
+                  <span class="badge rounded-pill bg-warning text-dark">Inactive</span>
+                }
+              </div>
+            </div>
+
+          </div>
+        }
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer bg-light border-0">
+        @if (selectedCategory()) {
+          <a [routerLink]="['/categories/edit', selectedCategory()?.id]" 
+             class="btn btn-primary btn-sm shadow-sm" 
+             data-bs-dismiss="modal">
+            <i class="bi bi-pencil-square me-1"></i> Edit Category
+          </a>
+        }
+        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+      </div>
+
+    </div>
+  </div>
 </div>

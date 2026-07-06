@@ -1,0 +1,85 @@
+<div class="page-header mb-4">
+  <div class="d-flex align-items-center gap-2">
+    <!-- Đảm bảo file .ts đã import RouterLink -->
+    <a routerLink="/categories" class="btn btn-outline-secondary btn-sm shadow-sm me-2">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+    <div>
+      <h2 class="fw-bold mb-1">Edit Category</h2>
+      <p class="text-muted mb-0">Modify the existing product category details</p>
+    </div>
+  </div>
+</div>
+
+<div class="card border-0 shadow-sm col-12 col-md-8 col-lg-6">
+  <div class="card-body p-4">
+    
+    <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
+      
+      <!-- Field: Name -->
+      <div class="mb-3">
+        <label for="categoryName" class="form-label fw-semibold text-dark">
+          Category Name <span class="text-danger">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="categoryName"
+          class="form-control form-control-lg" 
+          placeholder="e.g., Electronics, Home Decor..."
+          formControlName="name"
+          [class.is-invalid]="f['name'].touched && f['name'].invalid"
+        />
+        @if (f['name'].touched && f['name'].errors) {
+          <div class="invalid-feedback">
+            @if (f['name'].errors['required']) { Name is required. }
+            @if (f['name'].errors['minlength']) { Name must be at least 3 characters. }
+          </div>
+        }
+      </div>
+
+      <!-- Field: Description -->
+      <div class="mb-3">
+        <label for="categoryDesc" class="form-label fw-semibold text-dark">Description</label>
+        <textarea 
+          id="categoryDesc"
+          class="form-control" 
+          rows="4" 
+          placeholder="Enter category description (optional)..."
+          formControlName="description"
+        ></textarea>
+      </div>
+
+      <!-- Field: Status -->
+      <div class="mb-4">
+        <div class="form-check form-switch form-check-reverse d-flex justify-content-between align-items-center p-0">
+          <label class="form-check-label fw-semibold text-dark m-0 cursor-pointer" for="statusSwitch" style="cursor: pointer;">
+            Active Status
+          </label>
+          <input 
+            class="form-check-input m-0 shadow-none" 
+            type="checkbox" 
+            role="switch" 
+            id="statusSwitch"
+            formControlName="isActived"
+            style="width: 2.5em; height: 1.25em; cursor: pointer;"
+          >
+        </div>
+        <div class="form-text text-muted small mt-1">
+          If turned off, this category will be hidden from the storefront.
+        </div>
+      </div>
+
+      <hr class="text-secondary my-4 opacity-25">
+
+      <!-- Action Buttons -->
+      <div class="d-flex justify-content-end gap-2">
+        <a routerLink="/categories" class="btn btn-light px-4">Cancel</a>
+        <button type="submit" class="btn btn-primary px-4 shadow-sm" [disabled]="categoryForm.invalid">
+          <i class="bi bi-save me-1"></i> Update Category
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

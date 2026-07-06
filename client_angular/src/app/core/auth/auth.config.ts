@@ -19,4 +19,5 @@ export const authCodeFlowConfig: AuthConfig = {
 
   // Set to false for production to disable console debugging logs
   showDebugInformation: true,
+  postLogoutRedirectUri: window.location.origin + '/signout-callback-oidc'
 };

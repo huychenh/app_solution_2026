@@ -15,19 +15,28 @@ export class AuthService {
     
     // Listen to OAuth events to detect when token is successfully received
     this.oauthService.events.subscribe(event => {
-      if (event.type === 'token_received' || event.type === 'code_error') {
-        // Automatically redirect to clean root URL (http://localhost:4200)
-        this.router.navigate(['/home']);
+    if (event.type === 'token_received') {      
+      const returnUrl = sessionStorage.getItem('returnUrl');
+      
+      if (returnUrl) {
+        sessionStorage.removeItem('returnUrl');
+        this.router.navigateByUrl(returnUrl);
+      } else {
+        this.router.navigate(['/']);
       }
-    });
+    }
+  });
 
     // Load discovery document and parse the tokens from URL query parameters
     this.oauthService.loadDiscoveryDocumentAndTryLogin();
   }
 
-  login(): void {
-    this.oauthService.initLoginFlow();
+ login(returnUrl?: string): void {
+  if (returnUrl) {
+    sessionStorage.setItem('returnUrl', returnUrl);
   }
+  this.oauthService.initLoginFlow();
+}
 
   logout(): void {
     this.oauthService.logOut();

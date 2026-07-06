@@ -42,11 +42,7 @@ export class CategoryListComponent implements OnInit {
     if (confirm('Are you sure you want to delete this category?')) {
       this.categoryService.deleteCategory(id).subscribe({
         next: () => {
-          // Approach 1: Re-fetch the updated list from the server
           this.loadCategories();
-          
-          // Approach 2 (Optimistic UI): Update the local state directly without an extra API call
-          // this.categories.update(current => current.filter(c => c.id !== id));
         },
         error: (err) => {
           console.error('Error deleting category:', err);
@@ -54,4 +50,18 @@ export class CategoryListComponent implements OnInit {
       });
     }
   }
+
+
+  selectedCategory = signal<any>(null);
+
+  openDetailModal(item: any) {
+    this.selectedCategory.set(item);
+    
+    const modalElement = document.getElementById('categoryDetailModal');
+    if (modalElement) {
+      const bootstrapModal = new (window as any).bootstrap.Modal(modalElement);
+      bootstrapModal.show();
+    }
+  }
+
 }
