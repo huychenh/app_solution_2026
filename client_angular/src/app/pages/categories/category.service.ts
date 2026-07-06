@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Category } from '../../models/category.model'; // Ensured correct relative path to models folder
+import { Category, CreateCategory } from '../../models/category.model';
 import { GlobalConfiguration } from '../../core/config/global-configuration';
 
 @Injectable({
@@ -12,7 +12,7 @@ export class CategoryService {
   
   private apiBaseUrl = GlobalConfiguration.apiBaseUrl;
 
-  constructor(private http: HttpClient) { }
+  private http = inject(HttpClient);
 
   // READ ALL: Get all active/non-deleted categories
   getCategories(): Observable<Category[]> {
@@ -21,17 +21,17 @@ export class CategoryService {
 
   // READ DETAIL: Get a single category record by its Id for editing
   getCategoryById(id: string): Observable<Category> {
-    return this.http.get<Category>(`${this.apiBaseUrl}/categories/${id}`);
+    return this.http.get<Category>(`${this.apiBaseUrl}/categories/getbyid/${id}`);
   }
 
   // CREATE: Post a new category record to the database
-  addCategory(category: Category): Observable<Category> {
-    return this.http.post<Category>(`${this.apiBaseUrl}/categories`, category);
+  addCategory(category: CreateCategory): Observable<Category> {
+    return this.http.post<Category>(`${this.apiBaseUrl}/categories/create`, category);
   }
 
   // UPDATE: Put/Update an existing category record by Id
   updateCategory(id: string, category: Category): Observable<Category> {
-    return this.http.put<Category>(`${this.apiBaseUrl}/categories/${id}`, category);
+    return this.http.put<Category>(`${this.apiBaseUrl}/categories/update/${id}`, category);
   }
 
   // DELETE: Delete a category record by Id 

@@ -14,7 +14,7 @@ namespace ShopOnline.Api.Controllers
     public class CategoriesController(ICategoryService service) : ControllerBase
     {
         // GET: api/categories/list
-        //[Authorize]
+        [Authorize]
         [HttpGet("list")]
         public async Task<ActionResult<IEnumerable<CategoryReadDto>>> GetAll()
         {
@@ -57,7 +57,12 @@ namespace ShopOnline.Api.Controllers
                 {
                     Id = createdDto.Id,
                     Name = createdDto.Name,
-                    CreatedAt = DateTime.UtcNow
+                    Description = createdDto.Description,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdateAt = DateTime.UtcNow,
+                    IsActived = createdDto.IsActived,
+                    CreatedBy = createdDto.CreatedBy,
+                    UpdatedBy = createdDto.UpdatedBy,
                 };
 
                 var messageJson = JsonSerializer.Serialize(categoryEvent);

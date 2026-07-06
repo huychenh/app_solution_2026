@@ -6,11 +6,11 @@ export const GlobalConfiguration = {
 
   // Authentication Settings (OIDC / OAuth2 Flow)
   authenticationSetting: {
-    authority: 'https://localhost:44321/',
-    client_id: 'angular_client',
-    redirect_uri: 'http://localhost:4200/login-callback',
+    authority: 'https://localhost:7025',
+    client_id: 'client_angular',        
+    redirect_uri: 'https://localhost:4200/signin-oidc',
     monitorSession: false,
-    post_logout_redirect_uri: 'http://localhost:4200/logout-callback',
+    post_logout_redirect_uri: 'https://localhost:4200/signout-callback-oidc',
     response_type: 'code', // Authorization Code Flow with PKCE
     scope: 'openid profile email phone',
     automaticSilentRenew: true,
