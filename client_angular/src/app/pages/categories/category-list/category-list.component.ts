@@ -12,37 +12,106 @@ import { CategoryService } from '../category.service';
   styleUrl: './category-list.component.css'
 })
 export class CategoryListComponent implements OnInit {
-  // 1. Inject dependencies using the inject() function instead of the traditional constructor
+  // Inject dependencies using the inject() function
   private categoryService = inject(CategoryService);
 
-  // 2. Wrap the raw array into a Signal, initialized with an empty array []
+  // Signal to store and manage the categories list displayed on the UI
   categories = signal<Category[]>([]);
 
+  // Signal to handle the screen-level loading state for better UX
+  isLoading = signal<boolean>(false);
+
+  // Retain the current search keyword to preserve filters after a delete operation
+  currentKeyword: string = '';
+
+  // 🟢 NEW: Added properties to manage server-side pagination state
+  currentPage: number = 1;
+  pageSize: number = 10; // Default page size configured at client
+  totalCount: number = 0;
+  totalPages: number = 0;
+
+  // 🟢 NEW: Dropdown selection config options for items per page
+  pageSizeOptions: number[] = [10, 20, 50];
+
   ngOnInit(): void {
+    // Initial load: Fetch all categories with default configurations
     this.loadCategories();
   }
 
-  // READ: Fetch all categories from the API and update the Signal
-  loadCategories(): void {
-    this.categoryService.getCategories().subscribe({
-      next: (data: Category[]) => {        
-        // 3. Update the Signal value using .set(). The UI will reactively re-render without ChangeDetectorRef
-        this.categories.set(data);       
+  // 🔄 MODIFIED: Updated signature to accept structural pagination parameters
+  loadCategories(keyword: string = '', page: number = 1, size: number = this.pageSize): void {
+    this.isLoading.set(true); // Turn on the loading spinner
+    
+    // 🟢 NEW: Sync navigation states prior to dispatching HTTP request
+    this.currentPage = page;
+    this.pageSize = size;
+
+    // 🔄 MODIFIED: Pass page and pageSize down to the CategoryService API call
+    this.categoryService.getCategories(keyword, this.currentPage, this.pageSize).subscribe({
+      next: (response: any) => {        
+        // 🔄 MODIFIED: Backend API now returns an object { items: [], totalCount: X } instead of a raw array
+        this.categories.set(response.items); 
+        
+        // 🟢 NEW: Calculate metadata properties based on structural response
+        this.totalCount = response.totalCount;
+        this.totalPages = Math.ceil(this.totalCount / this.pageSize);
+
+        this.isLoading.set(false); // Turn off the loading spinner upon success
       },
       error: (err) => {
         console.error('Error fetching categories data from server:', err);
+        this.isLoading.set(false); // Ensure loading is turned off even if an error occurs
       }
     });
   }
 
-  // DELETE: Trigger delete mechanism
+  // SEARCH: Triggered when the user types a keyword and presses ENTER
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.currentKeyword = inputElement.value; // Synchronize the keyword state
+    
+    // 🔄 MODIFIED: Reset navigation flow back to Page 1 when initiating a new search context
+    this.loadCategories(this.currentKeyword, 1);
+  }
+
+  // 🟢 NEW: Triggered when clicking pagination navigation control selectors
+  onPageChange(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.loadCategories(this.currentKeyword, page);
+  }
+
+  // 🟢 NEW: Triggered when selecting a different size from the dropdown list picker
+  // onPageSizeChange(event: Event): void {
+  //   const selectElement = event.target as HTMLSelectElement;
+  //   const newSize = Number(selectElement.value);
+    
+  //   // Reset layout flow back to Page 1 using the newly chosen size limit parameters
+  //   this.loadCategories(this.currentKeyword, 1, newSize);
+  // }
+
+  onPageSizeChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    if (target) {
+      // 🔄 Ép kiểu giá trị nhận được từ String sang Number
+      this.pageSize = Number(target.value); 
+      
+      // Mỗi khi đổi page size, reset số trang về lại trang 1
+      this.currentPage = 1; 
+      
+      // Gọi lại hàm load dữ liệu với kích thước mới
+      this.loadCategories(this.currentKeyword, this.currentPage, this.pageSize);
+    }
+  }
+
+  // DELETE: Trigger the database delete mechanism
   onDelete(id: string | undefined): void {
     if (!id) return;
 
     if (confirm('Are you sure you want to delete this category?')) {
       this.categoryService.deleteCategory(id).subscribe({
         next: () => {
-          this.loadCategories();
+          // 🔄 MODIFIED: Maintain the exact active page grid context upon removal
+          this.loadCategories(this.currentKeyword, this.currentPage);
         },
         error: (err) => {
           console.error('Error deleting category:', err);
@@ -51,7 +120,7 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-
+  // MODAL DETAIL: Manage state and display mechanisms for the category detail modal
   selectedCategory = signal<any>(null);
 
   openDetailModal(item: any) {
@@ -63,5 +132,4 @@ export class CategoryListComponent implements OnInit {
       bootstrapModal.show();
     }
   }
-
 }

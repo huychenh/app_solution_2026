@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopOnline.Api.Data;
+using ShopOnline.Api.Helpers;
 using ShopOnline.Api.Models;
 
 namespace ShopOnline.Api.Repositories
@@ -45,6 +46,30 @@ namespace ShopOnline.Api.Repositories
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<PagedResult<Category>> GetAllByKeywordAsync(string? keyword, int page, int pageSize)
+        {
+            var query = _context.Categories.AsQueryable();
+
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                string searchKeyword = keyword.Trim();
+                query = query.Where(c => c.Name.Contains(searchKeyword)
+                                      || (c.Description != null && c.Description.Contains(searchKeyword)));
+            }
+
+            int totalCount = await query.CountAsync();
+
+            var items = await query.Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+
+            return new PagedResult<Category>
+            {
+                Items = items,
+                TotalCount = totalCount
+            };
         }
     }
 }

@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category, CreateCategory } from '../../models/category.model';
 import { GlobalConfiguration } from '../../core/config/global-configuration';
@@ -8,15 +8,24 @@ import { GlobalConfiguration } from '../../core/config/global-configuration';
   providedIn: 'root'
 })
 export class CategoryService {
-  // Base URL pointing to your backend API or local json-server
-  
   private apiBaseUrl = GlobalConfiguration.apiBaseUrl;
-
   private http = inject(HttpClient);
 
-  // READ ALL: Get all active/non-deleted categories
-  getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.apiBaseUrl}/categories/list`);
+  // 🔄 MODIFIED: Updated signature to accept 'page' and 'pageSize', and changed return type to Observable<any>
+  getCategories(keyword: string = '', page: number = 1, pageSize: number = 10): Observable<any> {
+    
+    // 🟢 NEW: Initialize HttpParams with pagination properties
+    let params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+    
+    // Append the search keyword filter if it is not empty
+    if (keyword.trim()) {
+      params = params.set('keyword', keyword.trim());
+    }
+
+    // 🔄 MODIFIED: URL pointed back to '/categories/search' to match your Backend Controller endpoint
+    return this.http.get<any>(`${this.apiBaseUrl}/categories/search`, { params });
   }
 
   // READ DETAIL: Get a single category record by its Id for editing
@@ -35,7 +44,6 @@ export class CategoryService {
   }
 
   // DELETE: Delete a category record by Id 
-  // (Note: If your backend supports Soft Delete, this will just update IsDeleted = true via a PATCH/PUT request)
   deleteCategory(id: string): Observable<any> {
     return this.http.delete<any>(`${this.apiBaseUrl}/categories/delete/${id}`);
   }
