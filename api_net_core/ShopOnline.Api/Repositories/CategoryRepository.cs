@@ -46,5 +46,24 @@ namespace ShopOnline.Api.Repositories
             await _context.SaveChangesAsync();
             return true;
         }
+
+        public async Task<IEnumerable<Category>> GetAllByKeywordAsync(string? keyword = null)
+        {
+            // 1. Prepare the base query from the DbContext (deferred execution)
+            var query = _context.Categories.AsQueryable();
+
+            // 2. Apply filtering conditionally if a keyword is provided
+            if (!string.IsNullOrWhiteSpace(keyword))
+            {
+                string searchKeyword = keyword.Trim();
+
+                // Filter categories where Name OR Description contains the keyword
+                query = query.Where(c => c.Name.Contains(searchKeyword)
+                                      || (c.Description != null && c.Description.Contains(searchKeyword)));
+            }
+
+            // 3. Execute the SQL query asynchronously against the database
+            return await query.ToListAsync();
+        }
     }
 }

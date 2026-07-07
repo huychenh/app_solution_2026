@@ -6,9 +6,15 @@ namespace ShopOnline.Api.Services
     public interface ICategoryService
     {
         Task<IEnumerable<CategoryReadDto>> GetAllAsync();
+
+        Task<IEnumerable<CategoryReadDto>> GetAllByKeywordAsync(string? keyword = null);
+
         Task<CategoryReadDto?> GetByIdAsync(int id);
+
         Task<CategoryReadDto> CreateAsync(CategoryCreateDto dto);
+
         Task<bool> UpdateAsync(int id, CategoryUpdateDto dto);
+
         Task<bool> DeleteAsync(int id);
     }
 }

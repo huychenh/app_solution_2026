@@ -12,11 +12,25 @@
   </div>
 </div>
 
-<!-- Danh sách Categories dạng Grid thay thế Table -->
-<div class="card border-0 shadow-sm">
+<div class="d-flex align-items-center mb-4 gap-2">
+  <label for="searchBox" class="fw-bold mb-0 text-secondary" style="white-space: nowrap;">Input keyword:</label>
+  <input 
+    id="searchBox"
+    type="text" 
+    class="form-control w-25 min-w-200" 
+    placeholder="Press Enter to search..."
+    (keydown.enter)="onSearch($event)"
+  />
+</div>
+
+<div *ngIf="isLoading()" class="text-center my-5 py-5 card border-0 shadow-sm">
+  <div class="spinner-border text-primary" role="status"></div>
+  <p class="text-muted mt-2 mb-0">Loading data from server, please wait...</p>
+</div>
+
+<div *ngIf="!isLoading()" class="card border-0 shadow-sm">
   <div class="card-body p-0">
     
-    <!-- Header của bảng -->
     <div class="d-none d-lg-flex row g-0 p-3 align-items-center border-bottom bg-light fw-bold text-secondary text-uppercase small">
       <div class="col-1">ID</div>
       <div class="col-2">Name</div>
@@ -28,24 +42,20 @@
       <div class="col-1 text-center">Actions</div>
     </div>
 
-    <!-- Body của bảng -->
     <div class="div-table-body">
       @for (item of categories(); track item.id) {
       <div class="row g-0 p-3 align-items-center border-bottom item-row-hover">
         
-        <!-- ID -->
         <div class="col-12 col-lg-1 mb-2 mb-lg-0">
           <span class="d-lg-none text-muted small fw-bold d-block">ID:</span>
           <span class="fw-bold text-primary">#{{ item.id }}</span>
         </div>
 
-        <!-- Name -->
         <div class="col-12 col-lg-2 mb-2 mb-lg-0">
           <span class="d-lg-none text-muted small fw-bold d-block">Name:</span>
           <div class="fw-semibold text-dark">{{ item.name }}</div>
         </div>
 
-        <!-- Description -->
         <div class="col-12 col-lg-2 mb-2 mb-lg-0">
           <span class="d-lg-none text-muted small fw-bold d-block">Description:</span>
           @if (item.description) {
@@ -55,7 +65,6 @@
           }
         </div>
 
-        <!-- Created Date -->
         <div class="col-12 col-lg-2 mb-2 mb-lg-0">
           <span class="d-lg-none text-muted small fw-bold d-block">Created Date:</span>
           <small class="text-muted">
@@ -64,7 +73,6 @@
           </small>
         </div>
 
-        <!-- Created By -->
         <div class="col-12 col-lg-1 mb-2 mb-lg-0">
           <span class="d-lg-none text-muted small fw-bold d-block">Created By:</span>
           <span class="badge bg-light text-dark border">
@@ -72,7 +80,6 @@
           </span>
         </div>
 
-        <!-- Updated Date / Updated By -->
         <div class="col-12 col-lg-2 mb-2 mb-lg-0">
           <span class="d-lg-none text-muted small fw-bold d-block">Updated Info:</span>
           @if (item.updatedDate) {
@@ -90,7 +97,6 @@
           }
         </div>
 
-        <!-- Status -->
         <div class="col-12 col-lg-1 mb-3 mb-lg-0">
           <span class="d-lg-none text-muted small fw-bold d-block mb-1">Status:</span>
           @if (item.isDeleted) {
@@ -102,7 +108,6 @@
           }
         </div>
 
-        <!-- Actions -->
         <div class="col-12 col-lg-1">
           <span class="d-lg-none text-muted small fw-bold d-block mb-2">Actions:</span>
           <div class="d-flex justify-content-lg-center gap-3">
@@ -130,7 +135,7 @@
         <i class="bi bi-folder-x display-3 text-secondary"></i>
         <h5 class="mt-3 mb-2">No Categories Found</h5>
         <p class="text-muted mb-0">
-          There are currently no categories in the system.
+          There are no categories matching your search keyword.
         </p>
       </div>
       }
@@ -139,12 +144,10 @@
   </div>
 </div>
 
-<!-- Modal Detail Category -->
 <div class="modal fade" id="categoryDetailModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content border-0 shadow">
       
-      <!-- Modal Header -->
       <div class="modal-header bg-light">
         <h5 class="modal-title fw-bold text-dark">
           <i class="bi bi-info-circle me-2 text-info"></i>Category Details
@@ -152,24 +155,20 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
 
-      <!-- Modal Body -->
       <div class="modal-body p-0">
         @if (selectedCategory()) {
           <div class="div-table-rows">
             
-            <!-- Row 1: ID -->
             <div class="d-flex align-items-center p-3 border-bottom row-striped">
               <div class="text-muted fw-semibold ps-2" style="width: 35%;">Category ID</div>
               <div class="fw-bold text-primary">#{{ selectedCategory()?.id }}</div>
             </div>
 
-            <!-- Row 2: Name -->
             <div class="d-flex align-items-center p-3 border-bottom">
               <div class="text-muted fw-semibold ps-2" style="width: 35%;">Category Name</div>
               <div class="fw-semibold text-dark">{{ selectedCategory()?.name }}</div>
             </div>
 
-            <!-- Row 3: Description -->
             <div class="d-flex align-items-center p-3 border-bottom row-striped">
               <div class="text-muted fw-semibold ps-2" style="width: 35%;">Description</div>
               <div>
@@ -181,7 +180,6 @@
               </div>
             </div>
 
-            <!-- Row 4: Created Info -->
             <div class="d-flex align-items-center p-3 border-bottom">
               <div class="text-muted fw-semibold ps-2" style="width: 35%;">Created Info</div>
               <div class="d-flex flex-wrap align-items-center gap-2">
@@ -192,7 +190,6 @@
               </div>
             </div>
 
-            <!-- Row 5: Updated Info -->
             <div class="d-flex align-items-center p-3 border-bottom row-striped">
               <div class="text-muted fw-semibold ps-2" style="width: 35%;">Updated Info</div>
               <div>
@@ -209,7 +206,6 @@
               </div>
             </div>
 
-            <!-- Row 6: Status -->
             <div class="d-flex align-items-center p-3">
               <div class="text-muted fw-semibold ps-2" style="width: 35%;">Status</div>
               <div>
@@ -227,7 +223,6 @@
         }
       </div>
 
-      <!-- Modal Footer -->
       <div class="modal-footer bg-light border-0">
         @if (selectedCategory()) {
           <a [routerLink]="['/categories/edit', selectedCategory()?.id]" 

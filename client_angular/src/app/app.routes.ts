@@ -7,9 +7,7 @@ import { CategoryEditComponent } from './pages/categories/category-edit/category
 
 
 export const routes: Routes = [
-  
   { path: '', component: HomeComponent },
-  
   { path: 'signin-oidc', component: HomeComponent },
   { path: 'signout-callback-oidc', redirectTo: '', pathMatch: 'full' },
 
@@ -21,11 +19,14 @@ export const routes: Routes = [
 
   { 
     path: 'categories/add', 
-    component: CategoryCreateComponent 
+    component: CategoryCreateComponent,
+    canActivate: [authGuard]
   },
   { 
     path: 'categories/edit/:id', 
-    component: CategoryEditComponent 
+    component: CategoryEditComponent,
+    canActivate: [authGuard]
   },
+  
   { path: '**', redirectTo: '', pathMatch: 'full' }
 ];

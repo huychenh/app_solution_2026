@@ -22,6 +22,15 @@ namespace ShopOnline.Api.Controllers
             return Ok(result);
         }
 
+        // GET: api/categories/list
+        [Authorize]
+        [HttpGet("search")]
+        public async Task<ActionResult<IEnumerable<CategoryReadDto>>> GetListByKeyword([FromQuery] string? keyword = null)
+        {
+            var result = await service.GetAllByKeywordAsync(keyword);
+            return Ok(result);
+        }
+
         // GET: api/categories/getbyid/1
         [Authorize]
         [HttpGet("getbyid/{id}")]

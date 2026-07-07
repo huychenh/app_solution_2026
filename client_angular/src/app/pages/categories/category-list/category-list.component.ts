@@ -12,37 +12,57 @@ import { CategoryService } from '../category.service';
   styleUrl: './category-list.component.css'
 })
 export class CategoryListComponent implements OnInit {
-  // 1. Inject dependencies using the inject() function instead of the traditional constructor
+  // Inject dependencies using the inject() function
   private categoryService = inject(CategoryService);
 
-  // 2. Wrap the raw array into a Signal, initialized with an empty array []
+  // Signal to store and manage the categories list displayed on the UI
   categories = signal<Category[]>([]);
 
+  // Signal to handle the screen-level loading state for better UX
+  isLoading = signal<boolean>(false);
+
+  // Retain the current search keyword to preserve filters after a delete operation
+  currentKeyword: string = '';
+
   ngOnInit(): void {
+    // Initial load: Fetch all categories with an empty keyword when entering the page
     this.loadCategories();
   }
 
-  // READ: Fetch all categories from the API and update the Signal
-  loadCategories(): void {
-    this.categoryService.getCategories().subscribe({
+  // READ: Fetch categories from the API, supporting server-side filtering
+  loadCategories(keyword: string = ''): void {
+    this.isLoading.set(true); // Turn on the loading spinner
+
+    this.categoryService.getCategories(keyword).subscribe({
       next: (data: Category[]) => {        
-        // 3. Update the Signal value using .set(). The UI will reactively re-render without ChangeDetectorRef
-        this.categories.set(data);       
+        this.categories.set(data); // Overwrite the signal with fresh server data
+        this.isLoading.set(false); // Turn off the loading spinner upon success
       },
       error: (err) => {
         console.error('Error fetching categories data from server:', err);
+        this.isLoading.set(false); // Ensure loading is turned off even if an error occurs
       }
     });
   }
 
-  // DELETE: Trigger delete mechanism
+  // SEARCH: Triggered when the user types a keyword and presses ENTER
+  onSearch(event: Event): void {
+    const inputElement = event.target as HTMLInputElement;
+    this.currentKeyword = inputElement.value; // Synchronize the keyword state
+    
+    // Call the API to filter data directly on the database server
+    this.loadCategories(this.currentKeyword);
+  }
+
+  // DELETE: Trigger the database delete mechanism
   onDelete(id: string | undefined): void {
     if (!id) return;
 
     if (confirm('Are you sure you want to delete this category?')) {
       this.categoryService.deleteCategory(id).subscribe({
         next: () => {
-          this.loadCategories();
+          // Re-fetch data using the current keyword to retain the user's active search filter
+          this.loadCategories(this.currentKeyword);
         },
         error: (err) => {
           console.error('Error deleting category:', err);
@@ -51,7 +71,7 @@ export class CategoryListComponent implements OnInit {
     }
   }
 
-
+  // MODAL DETAIL: Manage state and display mechanisms for the category detail modal
   selectedCategory = signal<any>(null);
 
   openDetailModal(item: any) {
@@ -63,5 +83,4 @@ export class CategoryListComponent implements OnInit {
       bootstrapModal.show();
     }
   }
-
 }

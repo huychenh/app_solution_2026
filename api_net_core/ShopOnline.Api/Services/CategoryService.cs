@@ -22,6 +22,12 @@ namespace ShopOnline.Api.Services
             return _mapper.Map<IEnumerable<CategoryReadDto>>(categories);
         }
 
+        public async Task<IEnumerable<CategoryReadDto>> GetAllByKeywordAsync(string? keyword = null)
+        {
+            var categories = await _repo.GetAllByKeywordAsync(keyword);
+            return _mapper.Map<IEnumerable<CategoryReadDto>>(categories);
+        }
+
         public async Task<CategoryReadDto?> GetByIdAsync(int id)
         {
             var category = await _repo.GetByIdAsync(id);
@@ -49,5 +55,6 @@ namespace ShopOnline.Api.Services
         public Task<bool> DeleteAsync(int id)
             => _repo.DeleteAsync(id);
 
+        
     }
 }

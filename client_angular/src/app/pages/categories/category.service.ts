@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Category, CreateCategory } from '../../models/category.model';
 import { GlobalConfiguration } from '../../core/config/global-configuration';
@@ -15,8 +15,18 @@ export class CategoryService {
   private http = inject(HttpClient);
 
   // READ ALL: Get all active/non-deleted categories
-  getCategories(): Observable<Category[]> {
-    return this.http.get<Category[]>(`${this.apiBaseUrl}/categories/list`);
+  getCategories(keyword: string = ''): Observable<Category[]> {
+
+    //return this.http.get<Category[]>(`${this.apiBaseUrl}/categories/list`);
+
+    let params = new HttpParams();
+    
+    if (keyword.trim()) {
+      params = params.set('keyword', keyword.trim());
+    }
+
+    return this.http.get<Category[]>(`${this.apiBaseUrl}/categories/search`, { params });
+
   }
 
   // READ DETAIL: Get a single category record by its Id for editing
