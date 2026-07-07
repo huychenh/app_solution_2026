@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using ShopOnline.Api.Data;
+using ShopOnline.Api.Helpers;
 using ShopOnline.Api.Models;
 
 namespace ShopOnline.Api.Repositories
@@ -47,23 +48,28 @@ namespace ShopOnline.Api.Repositories
             return true;
         }
 
-        public async Task<IEnumerable<Category>> GetAllByKeywordAsync(string? keyword = null)
+        public async Task<PagedResult<Category>> GetAllByKeywordAsync(string? keyword, int page, int pageSize)
         {
-            // 1. Prepare the base query from the DbContext (deferred execution)
             var query = _context.Categories.AsQueryable();
 
-            // 2. Apply filtering conditionally if a keyword is provided
             if (!string.IsNullOrWhiteSpace(keyword))
             {
                 string searchKeyword = keyword.Trim();
-
-                // Filter categories where Name OR Description contains the keyword
                 query = query.Where(c => c.Name.Contains(searchKeyword)
                                       || (c.Description != null && c.Description.Contains(searchKeyword)));
             }
 
-            // 3. Execute the SQL query asynchronously against the database
-            return await query.ToListAsync();
+            int totalCount = await query.CountAsync();
+
+            var items = await query.Skip((page - 1) * pageSize)
+                                   .Take(pageSize)
+                                   .ToListAsync();
+
+            return new PagedResult<Category>
+            {
+                Items = items,
+                TotalCount = totalCount
+            };
         }
     }
 }

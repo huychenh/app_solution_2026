@@ -1,12 +1,14 @@
-﻿using ShopOnline.Api.Models;
+﻿using ShopOnline.Api.Helpers;
+using ShopOnline.Api.Models;
 
 namespace ShopOnline.Api.Repositories
 {
     public interface ICategoryRepository
     {
         Task<IEnumerable<Category>> GetAllAsync();
-        
-        Task<IEnumerable<Category>> GetAllByKeywordAsync(string? keyword = null);
+
+        //Task<IEnumerable<Category>> GetAllByKeywordAsync(string? keyword, int page, int pageSize);
+        Task<PagedResult<Category>> GetAllByKeywordAsync(string? keyword, int page, int pageSize);
 
         Task<Category?> GetByIdAsync(int id);
 

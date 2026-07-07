@@ -1,4 +1,5 @@
-﻿using ShopOnline.Api.Models;
+﻿using ShopOnline.Api.Helpers;
+using ShopOnline.Api.Models;
 using ShopOnline.Common;
 
 namespace ShopOnline.Api.Services
@@ -7,7 +8,8 @@ namespace ShopOnline.Api.Services
     {
         Task<IEnumerable<CategoryReadDto>> GetAllAsync();
 
-        Task<IEnumerable<CategoryReadDto>> GetAllByKeywordAsync(string? keyword = null);
+        //Task<IEnumerable<CategoryReadDto>> GetAllByKeywordAsync(string? keyword, int page, int pageSize);
+        Task<PagedResult<CategoryReadDto>> GetAllByKeywordAsync(string? keyword, int page, int pageSize);
 
         Task<CategoryReadDto?> GetByIdAsync(int id);
 

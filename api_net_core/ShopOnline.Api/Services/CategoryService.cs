@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using ShopOnline.Api.Helpers;
 using ShopOnline.Api.Models;
 using ShopOnline.Api.Repositories;
 using ShopOnline.Common;
@@ -22,10 +23,17 @@ namespace ShopOnline.Api.Services
             return _mapper.Map<IEnumerable<CategoryReadDto>>(categories);
         }
 
-        public async Task<IEnumerable<CategoryReadDto>> GetAllByKeywordAsync(string? keyword = null)
+        public async Task<PagedResult<CategoryReadDto>> GetAllByKeywordAsync(string? keyword, int page, int pageSize)
         {
-            var categories = await _repo.GetAllByKeywordAsync(keyword);
-            return _mapper.Map<IEnumerable<CategoryReadDto>>(categories);
+            // 1. Fetch the paginated entity model block from the repository layer
+            var pagedCategories = await _repo.GetAllByKeywordAsync(keyword, page, pageSize);
+
+            // 2. Map only the generic item collection and preserve the absolute total count properties
+            return new PagedResult<CategoryReadDto>
+            {
+                Items = _mapper.Map<IEnumerable<CategoryReadDto>>(pagedCategories.Items),
+                TotalCount = pagedCategories.TotalCount
+            };
         }
 
         public async Task<CategoryReadDto?> GetByIdAsync(int id)
@@ -55,6 +63,5 @@ namespace ShopOnline.Api.Services
         public Task<bool> DeleteAsync(int id)
             => _repo.DeleteAsync(id);
 
-        
     }
 }

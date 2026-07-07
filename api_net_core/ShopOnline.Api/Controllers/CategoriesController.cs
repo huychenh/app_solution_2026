@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RabbitMQ.Client;
+using ShopOnline.Api.Helpers;
 using ShopOnline.Api.Services;
 using ShopOnline.Common;
 using ShopOnline.Common.Messages;
@@ -22,12 +23,15 @@ namespace ShopOnline.Api.Controllers
             return Ok(result);
         }
 
-        // GET: api/categories/list
-        [Authorize]
-        [HttpGet("search")]
-        public async Task<ActionResult<IEnumerable<CategoryReadDto>>> GetListByKeyword([FromQuery] string? keyword = null)
+        // GET: api/categories/list        
+        [Authorize]        
+        [HttpGet("search")]        
+        public async Task<ActionResult<PagedResult<CategoryReadDto>>> GetListByKeyword(
+            [FromQuery] string? keyword = null,
+            [FromQuery] int page = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var result = await service.GetAllByKeywordAsync(keyword);
+            var result = await service.GetAllByKeywordAsync(keyword, page, pageSize);
             return Ok(result);
         }
 

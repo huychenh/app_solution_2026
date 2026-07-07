@@ -24,18 +24,38 @@ export class CategoryListComponent implements OnInit {
   // Retain the current search keyword to preserve filters after a delete operation
   currentKeyword: string = '';
 
+  // 🟢 NEW: Added properties to manage server-side pagination state
+  currentPage: number = 1;
+  pageSize: number = 10; // Default page size configured at client
+  totalCount: number = 0;
+  totalPages: number = 0;
+
+  // 🟢 NEW: Dropdown selection config options for items per page
+  pageSizeOptions: number[] = [10, 20, 50];
+
   ngOnInit(): void {
-    // Initial load: Fetch all categories with an empty keyword when entering the page
+    // Initial load: Fetch all categories with default configurations
     this.loadCategories();
   }
 
-  // READ: Fetch categories from the API, supporting server-side filtering
-  loadCategories(keyword: string = ''): void {
+  // 🔄 MODIFIED: Updated signature to accept structural pagination parameters
+  loadCategories(keyword: string = '', page: number = 1, size: number = this.pageSize): void {
     this.isLoading.set(true); // Turn on the loading spinner
+    
+    // 🟢 NEW: Sync navigation states prior to dispatching HTTP request
+    this.currentPage = page;
+    this.pageSize = size;
 
-    this.categoryService.getCategories(keyword).subscribe({
-      next: (data: Category[]) => {        
-        this.categories.set(data); // Overwrite the signal with fresh server data
+    // 🔄 MODIFIED: Pass page and pageSize down to the CategoryService API call
+    this.categoryService.getCategories(keyword, this.currentPage, this.pageSize).subscribe({
+      next: (response: any) => {        
+        // 🔄 MODIFIED: Backend API now returns an object { items: [], totalCount: X } instead of a raw array
+        this.categories.set(response.items); 
+        
+        // 🟢 NEW: Calculate metadata properties based on structural response
+        this.totalCount = response.totalCount;
+        this.totalPages = Math.ceil(this.totalCount / this.pageSize);
+
         this.isLoading.set(false); // Turn off the loading spinner upon success
       },
       error: (err) => {
@@ -50,8 +70,37 @@ export class CategoryListComponent implements OnInit {
     const inputElement = event.target as HTMLInputElement;
     this.currentKeyword = inputElement.value; // Synchronize the keyword state
     
-    // Call the API to filter data directly on the database server
-    this.loadCategories(this.currentKeyword);
+    // 🔄 MODIFIED: Reset navigation flow back to Page 1 when initiating a new search context
+    this.loadCategories(this.currentKeyword, 1);
+  }
+
+  // 🟢 NEW: Triggered when clicking pagination navigation control selectors
+  onPageChange(page: number): void {
+    if (page < 1 || page > this.totalPages) return;
+    this.loadCategories(this.currentKeyword, page);
+  }
+
+  // 🟢 NEW: Triggered when selecting a different size from the dropdown list picker
+  // onPageSizeChange(event: Event): void {
+  //   const selectElement = event.target as HTMLSelectElement;
+  //   const newSize = Number(selectElement.value);
+    
+  //   // Reset layout flow back to Page 1 using the newly chosen size limit parameters
+  //   this.loadCategories(this.currentKeyword, 1, newSize);
+  // }
+
+  onPageSizeChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    if (target) {
+      // 🔄 Ép kiểu giá trị nhận được từ String sang Number
+      this.pageSize = Number(target.value); 
+      
+      // Mỗi khi đổi page size, reset số trang về lại trang 1
+      this.currentPage = 1; 
+      
+      // Gọi lại hàm load dữ liệu với kích thước mới
+      this.loadCategories(this.currentKeyword, this.currentPage, this.pageSize);
+    }
   }
 
   // DELETE: Trigger the database delete mechanism
@@ -61,8 +110,8 @@ export class CategoryListComponent implements OnInit {
     if (confirm('Are you sure you want to delete this category?')) {
       this.categoryService.deleteCategory(id).subscribe({
         next: () => {
-          // Re-fetch data using the current keyword to retain the user's active search filter
-          this.loadCategories(this.currentKeyword);
+          // 🔄 MODIFIED: Maintain the exact active page grid context upon removal
+          this.loadCategories(this.currentKeyword, this.currentPage);
         },
         error: (err) => {
           console.error('Error deleting category:', err);
